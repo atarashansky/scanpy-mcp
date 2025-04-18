@@ -1,0 +1,23 @@
+[project]
+name = "scanpy-mcp"
+dynamic = ["version"] 
+description = "An MCP server for Scanpy with natural language!"
+readme = "README.md"
+authors = [
+    { name = "shuang", email = "hsh-me@outlook.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp>=2.2.0",
+    "scanpy>=1.11.1",
+]
+
+[project.scripts]
+scanpy-mcp = "scanpy_mcp.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/scmcp/__init__.py" 

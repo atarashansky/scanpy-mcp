@@ -1,0 +1,74 @@
+"""
+Command-line interface for scanpy-mcp.
+
+This module provides a CLI entry point for the scanpy-mcp package.
+"""
+
+import asyncio
+import os
+import sys
+import typer
+from enum import Enum
+from typing import Optional
+from .server import scanpy_mcp, setup
+
+
+app = typer.Typer(
+    name="scanpymcp",
+    help="Scanpy MCP Server CLI",
+    add_completion=False,
+    no_args_is_help=True,  # Show help if no args provided    
+    )
+
+# Define enums for choices
+class Module(str, Enum):
+    ALL = "all"
+    IO = "io"
+    PP = "pp"
+    PL = "pl"
+    TL = "tl"
+    UTIL = "util"
+
+class Transport(str, Enum):
+    STDIO = "stdio"
+    SSE = "sse"
+
+@app.command(name="run")
+def run(
+    log_file: Optional[str] = typer.Option(None, "--log-file", help="Log file path, use stdout if None"),
+    module: Module = typer.Option(Module.ALL, "-m", "--module", help="Specify modules to load", 
+                              case_sensitive=False),
+    transport: Transport = typer.Option(Transport.STDIO, "-t", "--transport", help="Specify transport type", 
+                                 case_sensitive=False),
+    port: int = typer.Option(8000, "-p", "--port", help="Port for SSE transport"),
+    host: str = typer.Option("127.0.0.1", "--host", help="Host address for SSE transport")
+):
+    """Start Scanpy MCP Server"""
+    
+    # Set environment variables
+    if log_file is not None:
+        os.environ['SCANPYMCP_LOG_FILE'] = log_file
+    else:
+        os.environ['SCANPYMCP_LOG_FILE'] = ""
+        
+    os.environ['SCANPYMCP_TRANSPORT'] = transport.value
+    os.environ['SCANPYMCP_HOST'] = host
+    os.environ['SCANPYMCP_PORT'] = str(port)
+    os.environ['SCANPYMCP_MODULE'] = module.value
+       
+    asyncio.run(setup())
+    if transport == Transport.STDIO:
+        scanpy_mcp.run()
+    elif transport == Transport.SSE:
+        asyncio.run(
+            scanpy_mcp.run_sse_async(
+                host=host, 
+                port=port, 
+                log_level="info"
+            )
+        )
+
+@app.callback()
+def main():
+    """Scanpy MCP CLI root command."""
+    pass
