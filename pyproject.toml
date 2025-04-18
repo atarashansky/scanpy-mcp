@@ -20,4 +20,4 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.version]
-path = "src/scmcp/__init__.py" 
+path = "src/scanpy_mcp/__init__.py" 
