@@ -39,6 +39,7 @@ def diffmap(request: DiffMapModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.diffmap)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.diffmap(adata, **func_kwargs)
+    adata.obsm["X_diffmap"] = adata.obsm["X_diffmap"][:,1:]
     return adata
 
 @tl_mcp.tool()
