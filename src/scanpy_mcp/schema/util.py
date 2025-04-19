@@ -99,3 +99,6 @@ class DPTIROOTModel(BaseModel):
     dimension: int = Field(
         description="Dimension index to use for finding the root cell."
     )
+    direction: Literal["min", "max"] = Field(
+        description="use the minimum or maximum value along the selected dimension to identify the root cell."
+    )

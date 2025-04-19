@@ -104,10 +104,12 @@ def set_dpt_iroot(request: DPTIROOTModel, ctx: Context):
     adata = ctx.session.adata_dic[ctx.session.active_id]
     diffmap_key = request.diffmap_key
     dimension = request.dimension
-    
+    direction = request.direction
     if diffmap_key not in adata.obsm:
         raise ValueError(f"Diffusion map key '{diffmap_key}' not found in adata.obsm")
+    if direction == "min":
+        adata.uns["iroot"] = adata.obsm[diffmap_key][:, dimension].argmin()
+    else:  
+        adata.uns["iroot"] = adata.obsm[diffmap_key][:, dimension].argmax()
     
-    adata.uns["iroot"] = adata.obsm[diffmap_key][:, dimension].argmin()
-    return {"status": "success", "message": f"Successfully set root cell for DPT using dimension {dimension}"}
-
+    return {"status": "success", "message": f"Successfully set root cell for DPT using {direction} of dimension {dimension}"}
