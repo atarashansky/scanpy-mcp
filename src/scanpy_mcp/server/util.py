@@ -96,3 +96,18 @@ def merge_adata(request: ConcatAdataModel, ctx: Context):
     except Exception as e:
         logger.error(f"Error merging AnnData objects: {e}")
         raise e
+
+
+@ul_mcp.tool()
+def set_dpt_iroot(request: DPTIROOTModel, ctx: Context):
+    """Set the root cell for diffusion pseudotime (DPT) analysis."""
+    adata = ctx.session.adata_dic[ctx.session.active_id]
+    diffmap_key = request.diffmap_key
+    dimension = request.dimension
+    
+    if diffmap_key not in adata.obsm:
+        raise ValueError(f"Diffusion map key '{diffmap_key}' not found in adata.obsm")
+    
+    adata.uns["iroot"] = adata.obsm[diffmap_key][:, dimension].argmin()
+    return {"status": "success", "message": f"Successfully set root cell for DPT using dimension {dimension}"}
+

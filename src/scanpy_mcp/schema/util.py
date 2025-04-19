@@ -88,3 +88,14 @@ class ConcatAdataModel(BaseModel):
         default=False,
         description="Whether pairwise elements along the concatenated dimension should be included."
     )
+
+
+class DPTIROOTModel(BaseModel):
+    """Input schema for setting the root cell for diffusion pseudotime."""
+    diffmap_key: str = Field(
+        default="X_diffmap",
+        description="Key for diffusion map coordinates stored in adata.obsm."
+    )
+    dimension: int = Field(
+        description="Dimension index to use for finding the root cell."
+    )
