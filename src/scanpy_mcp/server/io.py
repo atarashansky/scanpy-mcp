@@ -39,6 +39,7 @@ def read(request: WriteModel, ctx: Context):
         adata = sc.read(**func_kwargs)
         if not kwargs.get("first_column_obs", True):
             adata = adata.T
+    adata.layers["counts"] = adata.X
     ctx.session.adata_dic[ctx.session.active_id] = adata
     return adata
 
