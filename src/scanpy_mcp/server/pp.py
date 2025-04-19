@@ -45,9 +45,13 @@ def calculate_qc_metrics(request: CalculateQCMetrics, ctx: Context):
 def log1p(request: Log1PModel, ctx: Context):
     """Logarithmize the data matrix (X = log(X + 1))"""
     func_kwargs = filter_args(request, sc.pp.log1p)
-    adata = ctx.session.adata_dic[ctx.session.active_id]
-    sc.pp.log1p(adata, **func_kwargs)
-    adata.raw = adata.copy()
+    adata = ctx.session.adata_dic[ctx.session.active_id].copy()
+    try:
+        sc.pp.log1p(adata, **func_kwargs)
+        adata.raw = adata.copy()
+    except Exception as e:
+        raise e
+    ctx.session.adata_dic[ctx.session.active_id] = adata
     return adata
 
 
@@ -55,8 +59,12 @@ def log1p(request: Log1PModel, ctx: Context):
 def normalize_total(request: NormalizeTotalModel, ctx: Context):
     """Normalize counts per cell to the same total count"""
     func_kwargs = filter_args(request, sc.pp.normalize_total)
-    adata = ctx.session.adata_dic[ctx.session.active_id]
-    sc.pp.normalize_total(adata, **func_kwargs)
+    adata = ctx.session.adata_dic[ctx.session.active_id].copy()
+    try:
+        sc.pp.normalize_total(adata, **func_kwargs)
+    except Exception as e:
+        raise e
+    ctx.session.adata_dic[ctx.session.active_id] = adata
     return adata
 
 
@@ -82,8 +90,12 @@ def highly_variable_genes(request: HighlyVariableGenesModel, ctx: Context):
 def regress_out(request: RegressOutModel, ctx: Context):
     """Regress out (mostly) unwanted sources of variation."""
     func_kwargs = filter_args(request, sc.pp.regress_out)
-    adata = ctx.session.adata_dic[ctx.session.active_id]
-    sc.pp.regress_out(adata, **func_kwargs)
+    adata = ctx.session.adata_dic[ctx.session.active_id].copy()
+    try:
+        sc.pp.regress_out(adata, **func_kwargs)
+    except Exception as e:
+        raise e
+    ctx.session.adata_dic[ctx.session.active_id] = adata
     return adata
 
 
@@ -91,8 +103,12 @@ def regress_out(request: RegressOutModel, ctx: Context):
 def scale(request: ScaleModel, ctx: Context):
     """Scale data to unit variance and zero mean"""
     func_kwargs = filter_args(request, sc.pp.scale)
-    adata = ctx.session.adata_dic[ctx.session.active_id]
-    sc.pp.scale(adata, **func_kwargs)
+    adata = ctx.session.adata_dic[ctx.session.active_id].copy()
+    try:
+        sc.pp.scale(adata, **func_kwargs)
+    except Exception as e:
+        raise e
+    ctx.session.adata_dic[ctx.session.active_id] = adata        
     return adata
 
 
@@ -100,8 +116,12 @@ def scale(request: ScaleModel, ctx: Context):
 def combat(request: CombatModel, ctx: Context):
     """ComBat function for batch effect correction"""
     func_kwargs = filter_args(request, sc.pp.combat)
-    adata = ctx.session.adata_dic[ctx.session.active_id]
-    sc.pp.combat(adata, **func_kwargs)
+    adata = ctx.session.adata_dic[ctx.session.active_id].copy()
+    try:
+        sc.pp.combat(adata, **func_kwargs)
+    except Exception as e:
+        raise e
+    ctx.session.adata_dic[ctx.session.active_id] = adata         
     return adata
 
 
