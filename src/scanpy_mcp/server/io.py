@@ -40,6 +40,8 @@ def read(request: WriteModel, ctx: Context):
         if not kwargs.get("first_column_obs", True):
             adata = adata.T
     adata.layers["counts"] = adata.X
+    adata.var_names_make_unique()
+    adata.obs_names_make_unique()
     ctx.session.adata_dic[ctx.session.active_id] = adata
     return adata
 
