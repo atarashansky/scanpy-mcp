@@ -46,6 +46,8 @@ def read(request: WriteModel, ctx: Context):
 
 @io_mcp.tool()
 def write(request: WriteModel, ctx: Context):
+    """save adata into a file.
+    """    
     kwargs = request.model_dump()
     args = request.model_fields_set
     parameters = inspect.signature(sc.write).parameters
