@@ -141,3 +141,61 @@ def neighbors(request: NeighborsModel, ctx: Context):
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.pp.neighbors(adata, **func_kwargs)
     return adata
+
+
+@pp_mcp.tool()
+def subset_adata(request: SubsetAdataModel, ctx: Context):
+    """Subset AnnData object based on observations (cells) or variables (genes) criteria.
+    
+    This tool allows subsetting based on numeric values in adata.obs or adata.var,
+    as well as selecting highly variable genes.
+    """
+    adata = ctx.session.adata_dic[ctx.session.active_id].copy()
+    result_adata = adata
+    
+    # Subset based on obs (cells) criteria
+    if request.obs_key is not None:
+        if request.obs_key not in adata.obs.columns:
+            raise ValueError(f"Key '{request.obs_key}' not found in adata.obs")
+        
+        mask = True  # Start with all cells selected
+        if request.obs_value is not None:
+            mask = mask & (adata.obs[request.obs_key] == request.obs_value)
+        if request.obs_min is not None:
+            mask = mask & (adata.obs[request.obs_key] >= request.obs_min)
+        
+        if request.obs_max is not None:
+            mask = mask & (adata.obs[request.obs_key] <= request.obs_max)
+        
+        result_adata = result_adata[mask, :]
+    
+    # Subset based on var (genes) criteria
+    if request.var_key is not None:
+        if request.var_key not in adata.var.columns:
+            raise ValueError(f"Key '{request.var_key}' not found in adata.var")
+        
+        mask = True  # Start with all genes selected
+        
+        if request.var_min is not None:
+            mask = mask & (adata.var[request.var_key] >= request.var_min)
+        
+        if request.var_max is not None:
+            mask = mask & (adata.var[request.var_key] <= request.var_max)
+        
+        result_adata = result_adata[:, mask]
+    
+    # Subset to highly variable genes
+    if request.highly_variable is not None and request.highly_variable:
+        if 'highly_variable' not in adata.var.columns:
+            raise ValueError("'highly_variable' column not found in adata.var. Run pp.highly_variable_genes first.")
+        
+        result_adata = result_adata[:, adata.var.highly_variable]
+    
+    # Return a copy if requested
+    if request.copy:
+        result_adata = result_adata.copy()
+    
+    # Update the session's AnnData object
+    ctx.session.adata_dic[ctx.session.active_id] = result_adata
+    
+    return result_adata

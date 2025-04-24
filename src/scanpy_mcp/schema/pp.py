@@ -72,6 +72,44 @@ class FilterGenes(BaseModel):
             raise ValueError("must be positive_integers")
         return v
 
+
+class SubsetAdataModel(BaseModel):
+    """Input schema for subsetting AnnData objects based on various criteria."""
+    obs_key: Optional[str] = Field(
+        default=None,
+        description="Key in adata.obs to use for subsetting observations/cells."
+    )
+    var_key: Optional[str] = Field(
+        default=None,
+        description="Key in adata.var to use for subsetting variables/genes."
+    )
+    obs_min: Optional[float] = Field(
+        default=None,
+        description="Minimum value for the obs_key to include in the subset."
+    )
+    obs_max: Optional[float] = Field(
+        default=None,
+        description="Maximum value for the obs_key to include in the subset."
+    )
+    obs_value: Optional[Any] = Field(
+        default=None,
+        description="Exact value for the obs_key to include in the subset (adata.obs[obs_key] == obs_value)."
+    )
+    var_min: Optional[float] = Field(
+        default=None,
+        description="Minimum value for the var_key to include in the subset."
+    )
+    var_max: Optional[float] = Field(
+        default=None,
+        description="Maximum value for the var_key to include in the subset."
+    )
+    highly_variable: Optional[bool] = Field(
+        default=False,
+        description="If True, subset to highly variable genes. Requires 'highly_variable' column in adata.var."
+    )
+
+
+
 class CalculateQCMetrics(BaseModel):
     """Input schema for the calculate_qc_metrics preprocessing tool."""
     
