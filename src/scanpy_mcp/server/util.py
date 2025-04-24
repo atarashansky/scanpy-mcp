@@ -3,7 +3,6 @@ from fastmcp import FastMCP, Context
 import os
 import anndata as ad
 from ..schema.util import *
-from ..util import add_op_log
 from ..logging_config import setup_logger
 logger = setup_logger(log_file=os.environ.get("SCANPYMCP_LOG_FILE", None))
 
@@ -44,13 +43,6 @@ def mark_var(request: MarkVarModel, ctx: Context):
             adata.var[var_name] = adata.var_names.str.contains(patterns)
         else:
             raise ValueError(f"Did not support pattern_type: {pattern_type}")
-    
-    add_op_log(adata, mark_var, {
-        "var_name": var_name,
-        "gene_class": gene_class,
-        "pattern_type": pattern_type,
-        "patterns": patterns
-    })
     
     return {var_name: adata.var[var_name].value_counts().to_dict(), "msg": f"add '{var_name}' column in adata.var"}
 
@@ -100,7 +92,7 @@ def merge_adata(request: ConcatAdataModel, ctx: Context):
 
 @ul_mcp.tool()
 def set_dpt_iroot(request: DPTIROOTModel, ctx: Context):
-    """Set the root cell for diffusion pseudotime (DPT) analysis."""
+    """Set the iroot cell"""
     adata = ctx.session.adata_dic[ctx.session.active_id]
     diffmap_key = request.diffmap_key
     dimension = request.dimension
@@ -113,3 +105,22 @@ def set_dpt_iroot(request: DPTIROOTModel, ctx: Context):
         adata.uns["iroot"] = adata.obsm[diffmap_key][:, dimension].argmax()
     
     return {"status": "success", "message": f"Successfully set root cell for DPT using {direction} of dimension {dimension}"}
+
+
+@ul_mcp.tool()
+def map_cell_type(request: CelltypeMapCellTypeModel, ctx: Context):
+    """Map cluster id to cell type names"""
+    adata = ctx.session.adata_dic[ctx.session.active_id]
+    cluster_key = request.cluster_key
+    added_key = request.added_key
+    mapping = request.mapping
+    
+    if cluster_key not in adata.obs.columns:
+        raise ValueError(f"cluster key '{cluster_key}' not found in adata.obs")
+    
+    adata.obs[added_key] = adata.obs[cluster_key].map(mapping)
+    return {
+        "status": "success", 
+        "message": f"Successfully mapped values from '{cluster_key}' to '{added_key}'",
+        "adata": adata
+    }

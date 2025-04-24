@@ -102,3 +102,16 @@ class DPTIROOTModel(BaseModel):
     direction: Literal["min", "max"] = Field(
         description="use the minimum or maximum value along the selected dimension to identify the root cell."
     )
+
+
+class CelltypeMapCellTypeModel(BaseModel):
+    """Input schema for mapping cluster IDs to cell type names."""
+    cluster_key: str = Field(
+        description="Key in adata.obs containing cluster IDs."
+    )
+    added_key: str = Field(
+        description="Key to add to adata.obs for cell type names."
+    )
+    mapping: Dict[str, str] = Field(
+        description="Mapping Dictionary from cluster IDs to cell type names."
+    )
