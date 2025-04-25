@@ -73,15 +73,11 @@ class FilterGenes(BaseModel):
         return v
 
 
-class SubsetAdataModel(BaseModel):
+class SubsetCellModel(BaseModel):
     """Input schema for subsetting AnnData objects based on various criteria."""
     obs_key: Optional[str] = Field(
         default=None,
         description="Key in adata.obs to use for subsetting observations/cells."
-    )
-    var_key: Optional[str] = Field(
-        default=None,
-        description="Key in adata.var to use for subsetting variables/genes."
     )
     obs_min: Optional[float] = Field(
         default=None,
@@ -95,6 +91,46 @@ class SubsetAdataModel(BaseModel):
         default=None,
         description="Exact value for the obs_key to include in the subset (adata.obs[obs_key] == obs_value)."
     )
+    min_counts: Optional[int] = Field(
+        default=None,
+        description="Minimum number of counts required for a cell to pass filtering."
+    )    
+    min_genes: Optional[int] = Field(
+        default=None,
+        description="Minimum number of genes expressed required for a cell to pass filtering."
+    )
+    max_counts: Optional[int] = Field(
+        default=None,
+        description="Maximum number of counts required for a cell to pass filtering."
+    )
+    max_genes: Optional[int] = Field(
+        default=None,
+        description="Maximum number of genes expressed required for a cell to pass filtering."
+    )
+
+
+class SubsetGeneModel(BaseModel):
+    """Input schema for subsetting AnnData objects based on various criteria."""
+    min_counts: Optional[int] = Field(
+        default=None,
+        description="Minimum number of counts required for a gene to pass filtering."
+    )
+    min_cells: Optional[int] = Field(
+        default=None,
+        description="Minimum number of cells expressed required for a gene to pass filtering."
+    )
+    max_counts: Optional[int] = Field(
+        default=None,
+        description="Maximum number of counts required for a gene to pass filtering."
+    )    
+    max_cells: Optional[int] = Field(
+        default=None,
+        description="Maximum number of cells expressed required for a gene to pass filtering."
+    )    
+    var_key: Optional[str] = Field(
+        default=None,
+        description="Key in adata.var to use for subsetting variables/genes."
+    )
     var_min: Optional[float] = Field(
         default=None,
         description="Minimum value for the var_key to include in the subset."
@@ -107,7 +143,6 @@ class SubsetAdataModel(BaseModel):
         default=False,
         description="If True, subset to highly variable genes. Requires 'highly_variable' column in adata.var."
     )
-
 
 
 class CalculateQCMetrics(BaseModel):
