@@ -17,7 +17,6 @@ def subset_cells(request: SubsetCellModel, ctx: Context):
     """subset or slice or filter cells based on total genes expressed counts and numbers. or values in adata.obs[obs_key]"""
     adata = ctx.session.adata_dic[ctx.session.active_id].copy()
     func_kwargs = filter_args(request, sc.pp.filter_cells)
-    logger.info(f"{func_kwargs}；  ")
     if func_kwargs:
         sc.pp.filter_cells(adata, **func_kwargs)
         add_op_log(adata, sc.pp.filter_cells, func_kwargs)
@@ -51,7 +50,6 @@ def subset_genes(request: SubsetGeneModel, ctx: Context):
     if func_kwargs:
         sc.pp.filter_genes(adata, **func_kwargs)
         add_op_log(adata, sc.pp.filter_genes, func_kwargs)
-
     if request.var_key is not None:
         if request.var_key not in adata.var.columns:
             raise ValueError(f"Key '{request.var_key}' not found in adata.var")
@@ -68,7 +66,7 @@ def subset_genes(request: SubsetGeneModel, ctx: Context):
             "var_key": request.var_key, "var_value": request.var_value, 
              "var_min": request.var_min, "var_max": request.var_max, "hpv":  request.highly_variable
              }
-        )        
+        )
     ctx.session.adata_dic[ctx.session.active_id] = adata
     return adata
 
@@ -193,4 +191,3 @@ def neighbors(request: NeighborsModel, ctx: Context):
     sc.pp.neighbors(adata, **func_kwargs)
     add_op_log(adata, sc.pp.neighbors, func_kwargs)
     return adata
-    
