@@ -46,6 +46,9 @@ def set_fig_path(func, **kwargs):
         if "basis" in kwargs and kwargs['basis'] is not None:
             old_path = fig_dir / f"{kwargs['basis']}.png"
             fig_path = fig_dir / f"{func}_{kwargs['basis']}.png"
+        else:
+            old_path = fig_dir / f"{func}.png"
+            fig_path = fig_dir / f"{func}.png"
     else:
         old_path = fig_dir / f"{func}_.png"
         fig_path = fig_dir / f"{func}.png"        
