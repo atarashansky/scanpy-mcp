@@ -10,7 +10,7 @@ import sys
 import typer
 from enum import Enum
 from typing import Optional
-from .server import scanpy_mcp, setup
+
 
 
 app = typer.Typer(
@@ -55,7 +55,7 @@ def run(
     os.environ['SCANPYMCP_HOST'] = host
     os.environ['SCANPYMCP_PORT'] = str(port)
     os.environ['SCANPYMCP_MODULE'] = module.value
-       
+    from .server import scanpy_mcp, setup
     asyncio.run(setup())
     if transport == Transport.STDIO:
         scanpy_mcp.run()
