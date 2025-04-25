@@ -113,5 +113,19 @@ class CelltypeMapCellTypeModel(BaseModel):
         description="Key to add to adata.obs for cell type names."
     )
     mapping: Dict[str, str] = Field(
+        default=None,
         description="Mapping Dictionary from cluster IDs to cell type names."
     )
+    new_names: Optional[List[str]] = Field(
+        default=None,
+        description="a list of new cell type names."
+    )
+    
+
+
+class AddLayerModel(BaseModel):
+    """Input schema for adding a layer to AnnData object."""
+    layer_name: str = Field(
+        description="Name of the layer to add to adata.layers."
+    )
+ 
