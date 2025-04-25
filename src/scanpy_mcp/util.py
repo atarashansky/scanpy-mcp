@@ -19,8 +19,8 @@ def add_op_log(adata, func, kwargs):
     
     if "operation" not in adata.uns:
         adata.uns["operation"] = {}
-        adata.uns["operation"]["adata"] = {}
-    
+        adata.uns["operation"]["op"] = {}
+        adata.uns["operation"]["opid"] = []
     # Handle different function types to get the function name
     if hasattr(func, "func") and hasattr(func.func, "__name__"):
         # For partial functions, use the original function name
@@ -43,7 +43,12 @@ def add_op_log(adata, func, kwargs):
         kwargs_str = str(new_kwargs)
     hash_input = f"{func_name}:{kwargs_str}"
     hash_key = hashlib.md5(hash_input.encode()).hexdigest()
-    adata.uns["operation"]["adata"][hash_key] = {func_name: new_kwargs}
+    adata.uns["operation"]["op"][hash_key] = {func_name: new_kwargs}
+    adata.uns["operation"]["opid"].append(hash_key)
+    from .logging_config import setup_logger
+    logger = setup_logger(log_file=os.environ.get("SCANPYMCP_LOG_FILE", None))
+    logger.info(f"{func}: {new_kwargs}")
+
 
 
 def set_fig_path(func, **kwargs):
