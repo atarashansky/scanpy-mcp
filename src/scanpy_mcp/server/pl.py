@@ -6,7 +6,7 @@ from fastmcp import FastMCP, Context
 from ..schema.pl import *
 from pathlib import Path
 from ..logging_config import setup_logger
-from ..util import filter_args, set_fig_path
+from ..util import filter_args, set_fig_path, add_op_log
 from ..logging_config import setup_logger
 logger = setup_logger(log_file=os.environ.get("SCANPYMCP_LOG_FILE", None))
 
@@ -23,9 +23,9 @@ def pca(request: PCAModel, ctx: Context):
     func_kwargs.pop("return_fig", True)
     func_kwargs["show"] = False
     func_kwargs["save"] = ".png"
-
     fig = sc.pl.pca(adata, **func_kwargs)
     fig_path = set_fig_path("pca", **func_kwargs)
+    add_op_log(adata, sc.pl.pca, func_kwargs)
     return {"figpath": fig_path}
 
 
@@ -41,6 +41,7 @@ def diffmap(request: DiffusionMapModel, ctx: Context):
     
     fig = sc.pl.diffmap(adata, **func_kwargs)
     fig_path = set_fig_path("diffmap", **func_kwargs)
+    add_op_log(adata, sc.pl.diffmap, func_kwargs)
     return {"figpath": fig_path}
 
 
@@ -56,6 +57,7 @@ def violin(request: ViolinModel, ctx: Context):
     
     fig = sc.pl.violin(adata, **func_kwargs)
     fig_path = set_fig_path("violin", **func_kwargs)
+    add_op_log(adata, sc.pl.violin, func_kwargs)
     return {"figpath": fig_path}
 
 
@@ -71,6 +73,7 @@ def stacked_violin(request: StackedViolinModel, ctx: Context):
     
     fig = sc.pl.stacked_violin(adata, **func_kwargs)
     fig_path = set_fig_path("stacked_violin", **func_kwargs)
+    add_op_log(adata, sc.pl.stacked_violin, func_kwargs)
     return {"figpath": fig_path}
 
 
@@ -86,6 +89,7 @@ def heatmap(request: HeatmapModel, ctx: Context):
     
     fig = sc.pl.heatmap(adata, **func_kwargs)
     fig_path = set_fig_path("heatmap", **func_kwargs)
+    add_op_log(adata, sc.pl.heatmap, func_kwargs)
     return {"figpath": fig_path}
 
 
@@ -101,6 +105,7 @@ def dotplot(request: DotplotModel, ctx: Context):
     
     fig = sc.pl.dotplot(adata, **func_kwargs)
     fig_path = set_fig_path("dotplot", **func_kwargs)
+    add_op_log(adata, sc.pl.dotplot, func_kwargs)
     return {"figpath": fig_path}
 
 
@@ -116,6 +121,7 @@ def matrixplot(request: MatrixplotModel, ctx: Context):
     
     fig = sc.pl.matrixplot(adata, **func_kwargs)
     fig_path = set_fig_path("matrixplot", **func_kwargs)
+    add_op_log(adata, sc.pl.matrixplot, func_kwargs)
     return {"figpath": fig_path}
 
 
@@ -131,6 +137,7 @@ def tracksplot(request: TracksplotModel, ctx: Context):
     
     fig = sc.pl.tracksplot(adata, **func_kwargs)
     fig_path = set_fig_path("tracksplot", **func_kwargs)
+    add_op_log(adata, sc.pl.tracksplot, func_kwargs)
     return {"figpath": fig_path}
 
 
@@ -146,6 +153,7 @@ def scatter(request: EnhancedScatterModel, ctx: Context):
     
     fig = sc.pl.scatter(adata, **func_kwargs)
     fig_path = set_fig_path("scatter", **func_kwargs)
+    add_op_log(adata, sc.pl.scatter, func_kwargs)
     return {"figpath": fig_path}
 
 
@@ -161,6 +169,7 @@ def embedding(request: EmbeddingModel, ctx: Context):
     
     fig = sc.pl.embedding(adata, **func_kwargs)
     fig_path = set_fig_path("embedding", **func_kwargs)
+    add_op_log(adata, sc.pl.embedding, func_kwargs)
     return {"figpath": fig_path}
 
 
@@ -176,6 +185,7 @@ def embedding_density(request: EmbeddingDensityModel, ctx: Context):
     
     fig = sc.pl.embedding_density(adata, **func_kwargs)
     fig_path = set_fig_path("embedding_density", **func_kwargs)
+    add_op_log(adata, sc.pl.embedding_density, func_kwargs)
     return {"figpath": fig_path}
 
 
@@ -191,6 +201,7 @@ def rank_genes_groups(request: RankGenesGroupsModel, ctx: Context):
     
     fig = sc.pl.rank_genes_groups(adata, **func_kwargs)
     fig_path = set_fig_path("rank_genes_groups", **func_kwargs)
+    add_op_log(adata, sc.pl.rank_genes_groups, func_kwargs)
     return {"figpath": fig_path}
 
 
@@ -206,6 +217,7 @@ def rank_genes_groups_dotplot(request: RankGenesGroupsDotplotModel, ctx: Context
     
     fig = sc.pl.rank_genes_groups_dotplot(adata, **func_kwargs)
     fig_path = set_fig_path("rank_genes_groups_dotplot", **func_kwargs)
+    add_op_log(adata, sc.pl.rank_genes_groups_dotplot, func_kwargs)
     return {"figpath": fig_path}
 
 
@@ -221,6 +233,7 @@ def clustermap(request: ClusterMapModel, ctx: Context):
     
     fig = sc.pl.clustermap(adata, **func_kwargs)
     fig_path = set_fig_path("clustermap", **func_kwargs)
+    add_op_log(adata, sc.pl.clustermap, func_kwargs)
     return {"figpath": fig_path}
 
 
@@ -236,6 +249,7 @@ def highly_variable_genes(request: HighlyVariableGenesModel, ctx: Context):
     
     fig = sc.pl.highly_variable_genes(adata, **func_kwargs)
     fig_path = set_fig_path("highly_variable_genes", **func_kwargs)
+    add_op_log(adata, sc.pl.highly_variable_genes, func_kwargs)
     return {"figpath": fig_path}
 
 
@@ -251,5 +265,6 @@ def pca_variance_ratio(request: PCAVarianceRatioModel, ctx: Context):
     
     fig = sc.pl.pca_variance_ratio(adata, **func_kwargs)
     fig_path = set_fig_path("pca_variance_ratio", **func_kwargs)
+    add_op_log(adata, sc.pl.pca_variance_ratio, func_kwargs)
     return {"figpath": fig_path}
 

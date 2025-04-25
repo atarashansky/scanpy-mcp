@@ -2,7 +2,7 @@ from fastmcp import FastMCP, Context
 import os
 import scanpy as sc
 from ..schema.tl import *
-from ..util import filter_args
+from ..util import filter_args, add_op_log
 from ..logging_config import setup_logger
 logger = setup_logger(log_file=os.environ.get("SCANPYMCP_LOG_FILE", None))
 
@@ -15,6 +15,7 @@ def tsne(request: TSNEModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.tsne)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.tsne(adata, **func_kwargs)
+    add_op_log(adata, sc.tl.tsne, func_kwargs)
     return adata
 
 @tl_mcp.tool()
@@ -23,6 +24,7 @@ def umap(request: UMAPModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.umap)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.umap(adata, **func_kwargs)
+    add_op_log(adata, sc.tl.umap, func_kwargs)
     return adata
 
 @tl_mcp.tool()
@@ -31,6 +33,7 @@ def draw_graph(request: DrawGraphModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.draw_graph)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.draw_graph(adata, **func_kwargs)
+    add_op_log(adata, sc.tl.draw_graph, func_kwargs)
     return adata
 
 @tl_mcp.tool()
@@ -40,6 +43,7 @@ def diffmap(request: DiffMapModel, ctx: Context):
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.diffmap(adata, **func_kwargs)
     adata.obsm["X_diffmap"] = adata.obsm["X_diffmap"][:,1:]
+    add_op_log(adata, sc.tl.diffmap, func_kwargs)
     return adata
 
 @tl_mcp.tool()
@@ -48,6 +52,7 @@ def embedding_density(request: EmbeddingDensityModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.embedding_density)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.embedding_density(adata, **func_kwargs)
+    add_op_log(adata, sc.tl.embedding_density, func_kwargs)
     return adata
 
 @tl_mcp.tool()
@@ -56,6 +61,7 @@ def leiden(request: LeidenModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.leiden)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.leiden(adata, **func_kwargs)
+    add_op_log(adata, sc.tl.leiden, func_kwargs)
     return adata
 
 @tl_mcp.tool()
@@ -64,6 +70,7 @@ def louvain(request: LouvainModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.louvain)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.louvain(adata, **func_kwargs)
+    add_op_log(adata, sc.tl.louvain, func_kwargs)
     return adata
 
 @tl_mcp.tool()
@@ -72,6 +79,7 @@ def dendrogram(request: DendrogramModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.dendrogram)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.dendrogram(adata, **func_kwargs)
+    add_op_log(adata, sc.tl.dendrogram, func_kwargs)
     return adata
 
 @tl_mcp.tool()
@@ -80,6 +88,7 @@ def dpt(request: DPTModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.dpt)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.dpt(adata, **func_kwargs)
+    add_op_log(adata, sc.tl.dpt, func_kwargs)
     return adata
 
 @tl_mcp.tool()
@@ -88,6 +97,7 @@ def paga(request: PAGAModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.paga)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.paga(adata, **func_kwargs)
+    add_op_log(adata, sc.tl.paga, func_kwargs)
     return adata
 
 @tl_mcp.tool()
@@ -96,6 +106,7 @@ def ingest(request: IngestModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.ingest)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.ingest(adata, **func_kwargs)
+    add_op_log(adata, sc.tl.ingest, func_kwargs)
     return adata
 
 @tl_mcp.tool()
@@ -104,6 +115,7 @@ def rank_genes_groups(request: RankGenesGroupsModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.rank_genes_groups)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.rank_genes_groups(adata, **func_kwargs)
+    add_op_log(adata, sc.tl.rank_genes_groups, func_kwargs)
     return adata
 
 @tl_mcp.tool()
@@ -112,6 +124,7 @@ def filter_rank_genes_groups(request: FilterRankGenesGroupsModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.filter_rank_genes_groups)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.filter_rank_genes_groups(adata, **func_kwargs)
+    add_op_log(adata, sc.tl.filter_rank_genes_groups, func_kwargs)
     return adata
 
 @tl_mcp.tool()
@@ -120,6 +133,7 @@ def marker_gene_overlap(request: MarkerGeneOverlapModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.marker_gene_overlap)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.marker_gene_overlap(adata, **func_kwargs)
+    add_op_log(adata, sc.tl.marker_gene_overlap, func_kwargs)
     return adata
 
 @tl_mcp.tool()
@@ -128,6 +142,7 @@ def score_genes(request: ScoreGenesModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.score_genes)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.score_genes(adata, **func_kwargs)
+    add_op_log(adata, sc.tl.score_genes, func_kwargs)
     return adata
 
 @tl_mcp.tool()
@@ -136,4 +151,5 @@ def score_genes_cell_cycle(request: ScoreGenesCellCycleModel, ctx: Context):
     func_kwargs = filter_args(request, sc.tl.score_genes_cell_cycle)
     adata = ctx.session.adata_dic[ctx.session.active_id]
     sc.tl.score_genes_cell_cycle(adata, **func_kwargs)
+    add_op_log(adata, sc.tl.score_genes_cell_cycle, func_kwargs)
     return adata
