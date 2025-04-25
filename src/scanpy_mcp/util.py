@@ -14,6 +14,9 @@ def filter_args(request, func):
 
 
 def add_op_log(adata, func, kwargs):
+    import hashlib
+    import json
+    
     if "operation" not in adata.uns:
         adata.uns["operation"] = {}
         adata.uns["operation"]["adata"] = {}
@@ -27,13 +30,20 @@ def add_op_log(adata, func, kwargs):
     elif hasattr(func, "__class__"):
         func_name = func.__class__.__name__
     else:
-        # Fallback for other cases
         func_name = str(func)
-    if not adata.uns["operation"]["adata"]:
-        op_num = "0"
-    else:
-        op_num = str(int(list(adata.uns["operation"]["adata"].keys())[-1])+1)
-    adata.uns["operation"]["adata"][op_num] = {func_name: kwargs}
+    new_kwargs = {}
+    for k,v in kwargs.items():
+        if isinstance(v, tuple):
+            new_kwargs[k] = list(v)
+        else:
+            new_kwargs[k] = v
+    try:
+        kwargs_str = json.dumps(new_kwargs, sort_keys=True)
+    except:
+        kwargs_str = str(new_kwargs)
+    hash_input = f"{func_name}:{kwargs_str}"
+    hash_key = hashlib.md5(hash_input.encode()).hexdigest()
+    adata.uns["operation"]["adata"][hash_key] = {func_name: new_kwargs}
 
 
 def set_fig_path(func, **kwargs):
