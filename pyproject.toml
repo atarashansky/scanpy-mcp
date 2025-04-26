@@ -1,7 +1,7 @@
 [project]
 name = "scanpy-mcp"
 dynamic = ["version"] 
-description = "An MCP server for Scanpy with natural language!"
+description = "Natural language interface for scRNA-Seq analysis with Scanpy through MCP."
 readme = "README.md"
 authors = [
     { name = "shuang", email = "hsh-me@outlook.com" }
@@ -9,7 +9,7 @@ authors = [
 requires-python = ">=3.10"
 dependencies = [
     "fastmcp>=2.2.0",
-    "scanpy>=1.11.1",
+    "scanpy>=1.10.0",
 ]
 
 [project.scripts]
