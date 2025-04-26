@@ -44,7 +44,7 @@ def subset_cells(request: SubsetCellModel, ctx: Context):
 
 @pp_mcp.tool()
 def subset_genes(request: SubsetGeneModel, ctx: Context):
-    """subset/slice/filter genes based on number of cells or counts, or values in adata.var[var_key] or highly variable genes"""    
+    """subset/slice/filter genes based on number of cells or counts, or values in adata.var[var_key] or subset highly variable genes"""    
     func_kwargs = filter_args(request, sc.pp.filter_genes)
     adata = ctx.session.adata_dic[ctx.session.active_id].copy()
     if func_kwargs:
