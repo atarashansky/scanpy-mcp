@@ -39,6 +39,8 @@ def read(request: WriteModel, ctx: Context):
         adata = sc.read(**func_kwargs)
         if not kwargs.get("first_column_obs", True):
             adata = adata.T
+    else:
+        raise ValueError("filename must be a file or a directory")
     adata.layers["counts"] = adata.X
     adata.var_names_make_unique()
     adata.obs_names_make_unique()
