@@ -40,7 +40,7 @@ def subset_cells(request: SubsetCellModel, ctx: Context):
         )
     ctx.session.adata_dic[ctx.session.active_id] = adata
     return adata
-# Error executing tool subset_cells: Only provide one of the optional parameters `min_counts`, `min_genes`, `max_counts`, `max_genes` per call.
+
 
 @pp_mcp.tool()
 def subset_genes(request: SubsetGeneModel, ctx: Context):
