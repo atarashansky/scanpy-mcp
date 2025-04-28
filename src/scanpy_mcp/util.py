@@ -50,23 +50,38 @@ def add_op_log(adata, func, kwargs):
     logger.info(f"{func}: {new_kwargs}")
 
 
-
 def set_fig_path(func, **kwargs):
+    "maybe I need to save figure by myself, instead of using scanpy save function..."
     fig_dir = Path(os.getcwd()) / "figures"
 
+    kwargs.pop("save", None)
+    kwargs.pop("show", None)
+    args = []
+    for k,v in kwargs.items():
+        if isinstance(v, (tuple, list, set)):
+            args.append(f"{k}:{'-'.join([str(i) for i in v])}")
+        else:
+            args.append(f"{k}:{v}")
+    args_str = "_".join(args)
     if func == "rank_genes_groups_dotplot":
         old_path = fig_dir / 'dotplot_.png'
-        fig_path = fig_dir / f"{func}.png"
+        fig_path = fig_dir / f"{func}_{args_str}.png"
     elif func in ["scatter", "embedding"]:
         if "basis" in kwargs and kwargs['basis'] is not None:
             old_path = fig_dir / f"{kwargs['basis']}.png"
-            fig_path = fig_dir / f"{func}_{kwargs['basis']}.png"
+            fig_path = fig_dir / f"{func}_{args_str}.png"
         else:
             old_path = fig_dir / f"{func}.png"
-            fig_path = fig_dir / f"{func}.png"
+            fig_path = fig_dir / f"{func}_{args_str}.png"
+    elif func == "highly_variable_genes":        
+        old_path = fig_dir / 'filter_genes_dispersion.png'
+        fig_path = fig_dir / f"{func}_{args_str}.png"
     else:
-        old_path = fig_dir / f"{func}_.png"
-        fig_path = fig_dir / f"{func}.png"        
+        if (fig_dir / f"{func}_.png").is_file():
+            old_path = fig_dir / f"{func}_.png"
+        else:
+            old_path = fig_dir / f"{func}.png"
+        fig_path = fig_dir / f"{func}_{args_str}.png"
     try:
         os.rename(old_path, fig_path)
     except FileNotFoundError:
