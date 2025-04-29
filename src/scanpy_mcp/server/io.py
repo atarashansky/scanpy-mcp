@@ -17,7 +17,6 @@ def read(request: WriteModel, ctx: Context):
     Read data from various file formats (h5ad, 10x, text files, etc.) or directory path.
     """
     kwargs = request.model_dump()
-    args = request.model_fields_set
     file = Path(kwargs.get("filename", None))
     if hasattr(ctx.session, "adata_dic"):
         if kwargs.get("sampleid", None) is not None:
@@ -29,13 +28,11 @@ def read(request: WriteModel, ctx: Context):
         ctx.session.active_id = "adata0"
 
     if file.is_dir():
-        kwargs["path"] = kwargs["filename"] 
-        parameters = inspect.signature(sc.read_10x_mtx).parameters
-        func_kwargs = {k: kwargs.get(k) for k in args if k in parameters}
+        kwargs["path"] = kwargs["filename"]
+        func_kwargs = filter_args(request, sc.read_10x_mtx)
         adata = sc.read_10x_mtx(kwargs["path"], **func_kwargs)
     elif file.is_file():
-        parameters = inspect.signature(sc.read).parameters
-        func_kwargs = {k: kwargs.get(k) for k in args if k in parameters}
+        func_kwargs = filter_args(request, sc.read)
         adata = sc.read(**func_kwargs)
         if not kwargs.get("first_column_obs", True):
             adata = adata.T
