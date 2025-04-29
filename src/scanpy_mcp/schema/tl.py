@@ -67,19 +67,19 @@ class TSNEModel(BaseModel):
 class UMAPModel(BaseModel):
     """Input schema for the UMAP dimensionality reduction tool."""
     
-    min_dist: float = Field(
+    min_dist: Optional[float] = Field(
         default=0.5,
         description="Minimum distance between embedded points.",
         gt=0
     )
     
-    spread: float = Field(
+    spread: Optional[float] = Field(
         default=1.0,
         description="Scale of embedded points.",
         gt=0
     )
     
-    n_components: int = Field(
+    n_components: Optional[int] = Field(
         default=2,
         description="Number of dimensions of the embedding.",
         gt=0
@@ -91,27 +91,27 @@ class UMAPModel(BaseModel):
         gt=0
     )
     
-    alpha: float = Field(
+    alpha: Optional[float] = Field(
         default=1.0,
         description="Initial learning rate for the embedding optimization.",
         gt=0
     )
     
-    gamma: float = Field(
+    gamma: Optional[float] = Field(
         default=1.0,
         description="Weighting applied to negative samples.",
         gt=0
     )
-    negative_sample_rate: int = Field(
+    negative_sample_rate: Optional[int] = Field(
         default=5,
         description="Number of negative samples per positive sample.",
         gt=0
     )
-    init_pos: str = Field(
+    init_pos: Optional[str] = Field(
         default='spectral',
         description="How to initialize the low dimensional embedding.",
     )
-    random_state: int = Field(
+    random_state: Optional[int] = Field(
         default=0,
         description="Random seed for reproducibility."
     )
@@ -125,7 +125,7 @@ class UMAPModel(BaseModel):
         description="Parameter controlling the embedding.",
         gt=0
     )
-    method: str = Field(
+    method: Optional[str] = Field(
         default='umap',
         description="Implementation to use ('umap' or 'rapids')."
     )
