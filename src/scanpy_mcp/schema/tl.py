@@ -14,26 +14,22 @@ class TSNEModel(BaseModel):
         default=None,
         description="Key for .obsm to use as representation."
     )
-    perplexity: Union[float, int] = Field(
+    perplexity: Optional[Union[float, int]] = Field(
         default=30,
         description="Related to number of nearest neighbors, typically between 5-50.",
         gt=0
     )
-    early_exaggeration: Union[float, int] = Field(
+    early_exaggeration: Optional[Union[float, int]] = Field(
         default=12,
         description="Controls space between natural clusters in embedded space.",
         gt=0
     )
-    learning_rate: Union[float, int] = Field(
+    learning_rate: Optional[Union[float, int]] = Field(
         default=1000,
         description="Learning rate for optimization, typically between 100-1000.",
         gt=0
     )
-    random_state: int = Field(
-        default=0,
-        description="Random seed for reproducibility."
-    )
-    use_fast_tsne: bool = Field(
+    use_fast_tsne: Optional[bool] = Field(
         default=False,
         description="Whether to use Multicore-tSNE implementation."
     )
@@ -42,7 +38,7 @@ class TSNEModel(BaseModel):
         description="Number of jobs for parallel computation.",
         gt=0
     )
-    metric: str = Field(
+    metric: Optional[str] = Field(
         default='euclidean',
         description="Distance metric to use."
     )
@@ -265,17 +261,12 @@ class EmbeddingDensityModel(BaseModel):
 class LeidenModel(BaseModel):
     """Input schema for the Leiden clustering algorithm."""
     
-    resolution: float = Field(
+    resolution: Optional[float] = Field(
         default=1.0,
         description="A parameter value controlling the coarseness of the clustering. Higher values lead to more clusters."
     )
     
-    random_state: int = Field(
-        default=0,
-        description="Change the initialization of the optimization."
-    )
-    
-    key_added: str = Field(
+    key_added: Optional[str] = Field(
         default='leiden',
         description="`adata.obs` key under which to add the cluster labels."
     )
@@ -285,12 +276,12 @@ class LeidenModel(BaseModel):
         description="Whether to treat the graph as directed or undirected."
     )
     
-    use_weights: bool = Field(
+    use_weights: Optional[bool] = Field(
         default=True,
         description="If `True`, edge weights from the graph are used in the computation (placing more emphasis on stronger edges)."
     )
     
-    n_iterations: int = Field(
+    n_iterations: Optional[int] = Field(
         default=-1,
         description="How many iterations of the Leiden clustering algorithm to perform. -1 runs until optimal clustering."
     )
@@ -305,7 +296,7 @@ class LeidenModel(BaseModel):
         description="Use .obsp[obsp] as adjacency. You can't specify both `obsp` and `neighbors_key` at the same time."
     )
     
-    flavor: Literal['leidenalg', 'igraph'] = Field(
+    flavor: Optional[Literal['leidenalg', 'igraph']] = Field(
         default='igraph',
         description="Which package's implementation to use."
     )

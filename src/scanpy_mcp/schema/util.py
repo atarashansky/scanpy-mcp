@@ -22,7 +22,7 @@ class MarkVarModel(BaseModel):
         default=None,
         description="Pattern matching type (startswith/endswith/contains), it should be None when gene_class is not None"
     )    
-    patterns: str = Field(
+    patterns: Optional[str] = Field(
         default=None,
         description="gene pattern to match, must be a string, it should be None when gene_class is not None"
     )

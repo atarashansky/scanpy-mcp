@@ -8,7 +8,7 @@ from pydantic import (
 )
 from typing import Optional, Union, List, Dict, Any
 from typing import Literal
-
+import numpy as np
 
 
 class FilterCells(BaseModel):
@@ -302,39 +302,39 @@ class HighlyVariableGenesModel(BaseModel):
         description="Number of highly-variable genes to keep. Mandatory if `flavor='seurat_v3'",
     )
     
-    min_disp: float = Field(
+    min_disp: Optional[float] = Field(
         default=0.5,
         description="Minimum dispersion cutoff for gene selection."
     )
     
-    max_disp: float = Field(
-        default=float('inf'),
+    max_disp: Optional[float] = Field(
+        default=np.inf,
         description="Maximum dispersion cutoff for gene selection."
     )
-    min_mean: float = Field(
+    min_mean: Optional[float] = Field(
         default=0.0125,
         description="Minimum mean expression cutoff for gene selection."
     )
-    max_mean: float = Field(
+    max_mean: Optional[float] = Field(
         default=3,
         description="Maximum mean expression cutoff for gene selection."
     )
-    span: float = Field(
+    span: Optional[float] = Field(
         default=0.3,
         description="Fraction of data used for loess model fit in seurat_v3.",
         gt=0,
         lt=1
     )
-    n_bins: int = Field(
+    n_bins: Optional[int] = Field(
         default=20,
         description="Number of bins for mean expression binning.",
         gt=0
     )
-    flavor: Literal['seurat', 'cell_ranger', 'seurat_v3', 'seurat_v3_paper'] = Field(
+    flavor: Optional[Literal['seurat', 'cell_ranger', 'seurat_v3', 'seurat_v3_paper']] = Field(
         default='seurat',
         description="Method for identifying highly variable genes."
     )
-    subset: bool = Field(
+    subset: Optional[bool] = Field(
         default=False,
         description="Inplace subset to highly-variable genes if True."
     )
@@ -343,7 +343,7 @@ class HighlyVariableGenesModel(BaseModel):
         description="Key in adata.obs for batch information."
     )
     
-    check_values: bool = Field(
+    check_values: Optional[bool] = Field(
         default=True,
         description="Check if counts are integers for seurat_v3 flavor."
     )
