@@ -425,7 +425,11 @@ class ViolinModel(BaseStatPlotModel):
     
     keys: Union[str, List[str]] = Field(
         ...,  # Required field
-        description="Keys for accessing variables of .var_names or fields of .obs."
+        description="Keys for accessing variables of adata.var or adata.obs. or variables of adata.obsm when obsm_key is not None."
+    )
+    use_obsm: str = Field(
+        default=None,
+        description="using data of adata.obsm instead of adata.X"
     )
     stripplot: bool = Field(
         default=True,
@@ -508,7 +512,10 @@ class MatrixplotModel(BaseMatrixModel):
         default=False,
         description="By default, the x axis contains var_names and the y axis the groupby categories. By setting swap_axes then x are the groupby categories and y the var_names."
     )
-    
+    use_obsm: str = Field(
+        default=None,
+        description="using data of adata.obsm instead of adata.X"
+    )
     @field_validator('num_categories')
     def validate_num_categories(cls, v: int) -> int:
         """Validate num_categories is positive"""
@@ -875,7 +882,10 @@ class EmbeddingModel(BaseEmbeddingModel):
         ...,  # Required field
         description="Name of the obsm basis to use."
     )
-    
+    use_obsm: str = Field(
+        default=None,
+        description="using data of adata.obsm instead of adata.X"
+    )
     mask_obs: Optional[str] = Field(
         default=None,
         description="A boolean array or a string mask expression to subset observations."

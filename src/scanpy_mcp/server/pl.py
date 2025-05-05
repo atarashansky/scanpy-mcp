@@ -6,7 +6,7 @@ from fastmcp import FastMCP, Context
 from ..schema.pl import *
 from pathlib import Path
 from ..logging_config import setup_logger
-from ..util import filter_args, set_fig_path, add_op_log,forward_request
+from ..util import filter_args, set_fig_path, add_op_log,forward_request, obsm2adata
 from ..logging_config import setup_logger
 logger = setup_logger(log_file=os.environ.get("SCANPYMCP_LOG_FILE", None))
 
@@ -65,7 +65,8 @@ async def violin(request: ViolinModel, ctx: Context):
     func_kwargs.pop("return_fig", True)
     func_kwargs["show"] = False
     func_kwargs["save"] = ".png"
-    
+    if request.use_obsm is not None:
+        adata = obsm2adata(adata, request.use_obsm)
     fig = sc.pl.violin(adata, **func_kwargs)
     fig_path = set_fig_path("violin", **func_kwargs)
     add_op_log(adata, sc.pl.violin, func_kwargs)
@@ -145,7 +146,8 @@ async def matrixplot(request: MatrixplotModel, ctx: Context):
     func_kwargs.pop("return_fig", True)
     func_kwargs["show"] = False
     func_kwargs["save"] = ".png"
-    
+    if request.use_obsm is not None:
+        adata = obsm2adata(adata, request.use_obsm)
     fig = sc.pl.matrixplot(adata, **func_kwargs)
     fig_path = set_fig_path("matrixplot", **func_kwargs)
     add_op_log(adata, sc.pl.matrixplot, func_kwargs)
@@ -205,7 +207,8 @@ async def embedding(request: EmbeddingModel, ctx: Context):
     func_kwargs.pop("return_fig", True)
     func_kwargs["show"] = False
     func_kwargs["save"] = ".png"
-    
+    if request.use_obsm is not None:
+        adata = obsm2adata(adata, request.use_obsm)        
     fig = sc.pl.embedding(adata, **func_kwargs)
     fig_path = set_fig_path("embedding", **func_kwargs)
     add_op_log(adata, sc.pl.embedding, func_kwargs)
