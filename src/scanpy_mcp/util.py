@@ -139,3 +139,12 @@ async def forward_request(func, kwargs):
     async with client:
         result = await client.call_tool(func, {"request": kwargs}, _return_raw_result=True)
     return result
+
+
+def obsm2adata(adata, obsm_key):
+    from anndata import AnnData
+
+    if key not in adata.obsm_keys():
+        raise ValueError(f"key {key} not found in adata.obsm")
+    else:
+        return AnnData(adata.obsm[key], obs=adata.obs)
