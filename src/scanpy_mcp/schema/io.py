@@ -15,23 +15,23 @@ class ReadModel(BaseModel):
     filename: str = Field(
         description="Path to the file to read."
     )
-    sampleid: Optional[str] = Field(
+    sampleid: str = Field(
         default=None,
         description="Sample identifier to mark and distinguish different samples."
     )    
-    backed: Optional[Literal['r', 'r+']] = Field(
+    backed: Literal['r', 'r+'] = Field(
         default=None,
         description="If 'r', load AnnData in 'backed' mode instead of fully loading it into memory ('memory' mode). If you want to modify backed attributes of the AnnData object, you need to choose 'r+'."
     )
-    sheet: Optional[str] = Field(
+    sheet: str = Field(
         default=None,
         description="Name of sheet/table in hdf5 or Excel file."
     )
-    ext: Optional[str] = Field(
+    ext: str = Field(
         default=None,
         description="Extension that indicates the file type. If None, uses extension of filename."
     )
-    delimiter: Optional[str] = Field(
+    delimiter: str = Field(
         default=None,
         description="Delimiter that separates data within text file. If None, will split at arbitrary number of white spaces, which is different from enforcing splitting at any single white space."
     )
@@ -43,7 +43,7 @@ class ReadModel(BaseModel):
         default=True,
         description="If True, assume the first column stores observations (cell or barcode) names when provide text file. If False, the data will be transposed."
     )
-    backup_url: Optional[str] = Field(
+    backup_url: str = Field(
         default=None,
         description="Retrieve the file from an URL if not present on disk."
     )
@@ -51,11 +51,11 @@ class ReadModel(BaseModel):
         default=False,
         description="If False, read from source, if True, read from fast 'h5ad' cache."
     )
-    cache_compression: Optional[Literal['gzip', 'lzf']] = Field(
+    cache_compression: Literal['gzip', 'lzf'] = Field(
         default=None,
         description="See the h5py dataset_compression. (Default: settings.cache_compression)"
     )
-    var_names: Optional[str] = Field(
+    var_names: str = Field(
         default="gene_symbols",
         description="The variables index for 10x mtx format. Either 'gene_symbols' or 'gene_ids'."
     )
@@ -67,7 +67,7 @@ class ReadModel(BaseModel):
         default=True,
         description="Only keep 'Gene Expression' data and ignore other feature types, e.g. 'Antibody Capture', 'CRISPR Guide Capture', or 'Custom'. Used for 10x formats."
     )
-    prefix: Optional[str] = Field(
+    prefix: str = Field(
         default=None,
         description="Any prefix before matrix.mtx, genes.tsv and barcodes.tsv. For instance, if the files are named patientA_matrix.mtx, patientA_genes.tsv and patientA_barcodes.tsv the prefix is patientA_. Used for 10x mtx format."
     )
@@ -96,15 +96,15 @@ class WriteModel(BaseModel):
     filename: str = Field(
         description="Path to save the file. If no extension is provided, the default format will be used."
     )
-    ext: Optional[Literal['h5', 'csv', 'txt', 'npz']] = Field(
+    ext: Literal['h5', 'csv', 'txt', 'npz'] = Field(
         default=None,
         description="File extension to infer file format. If None, defaults to scanpy's settings.file_format_data."
     )
-    compression: Optional[Literal['gzip', 'lzf']] = Field(
+    compression: Literal['gzip', 'lzf'] = Field(
         default='gzip',
         description="Compression format for h5 files."
     )
-    compression_opts: Optional[int] = Field(
+    compression_opts: int = Field(
         default=None,
         description="Compression options for h5 files."
     )
