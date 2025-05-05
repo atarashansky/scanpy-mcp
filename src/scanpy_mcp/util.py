@@ -117,9 +117,6 @@ def savefig(fig, file, format="png"):
         raise e
 
 
-
-
-
 async def get_figure(request):
     figure_name = request.path_params["figure_name"]
     figure_path = f"./figures/{figure_name}"
@@ -129,3 +126,16 @@ async def get_figure(request):
         return Response(content={"error": "figure not found"}, media_type="application/json")
     
     return FileResponse(figure_path)
+
+
+async def forward_request(func, kwargs):
+    from fastmcp import Client
+
+    forward_url = os.environ.get("SCANPYMCP_FORWARD", False)
+    if not forward_url:
+        return None
+        
+    client = Client(forward_url)
+    async with client:
+        result = await client.call_tool(func, {"request": kwargs}, _return_raw_result=True)
+    return result

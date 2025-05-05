@@ -41,16 +41,16 @@ def run(
     transport: Transport = typer.Option(Transport.STDIO, "-t", "--transport", help="Specify transport type", 
                                  case_sensitive=False),
     port: int = typer.Option(8000, "-p", "--port", help="Port for SSE transport"),
-    host: str = typer.Option("127.0.0.1", "--host", help="Host address for SSE transport")
+    host: str = typer.Option("127.0.0.1", "--host", help="Host address for SSE transport"),
+    forward: str = typer.Option(None, "-f", "--forward", help="forward request to another server"),
 ):
     """Start Scanpy MCP Server"""
     
     # Set environment variables
     if log_file is not None:
         os.environ['SCANPYMCP_LOG_FILE'] = log_file
-    else:
-        os.environ['SCANPYMCP_LOG_FILE'] = ""
-        
+    if forward is not None:
+        os.environ['SCANPYMCP_FORWARD'] = forward
     os.environ['SCANPYMCP_TRANSPORT'] = transport.value
     os.environ['SCANPYMCP_HOST'] = host
     os.environ['SCANPYMCP_PORT'] = str(port)
