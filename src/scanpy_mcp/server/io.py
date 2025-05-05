@@ -4,7 +4,7 @@ from pathlib import Path
 import scanpy as sc
 from fastmcp import FastMCP , Context
 from ..schema.io import *
-from ..util import filter_args
+from ..util import filter_args, forward_request
 from ..logging_config import setup_logger
 logger = setup_logger(log_file=os.environ.get("SCANPYMCP_LOG_FILE", None))
 
@@ -12,21 +12,23 @@ io_mcp = FastMCP("ScanpyMCP-IO-Server")
 
 
 @io_mcp.tool()
-def read(request: WriteModel, ctx: Context):
+async def read(request: ReadModel, ctx: Context):
     """
     Read data from various file formats (h5ad, 10x, text files, etc.) or directory path.
     """
     kwargs = request.model_dump()
-    file = Path(kwargs.get("filename", None))
-    if hasattr(ctx.session, "adata_dic"):
-        if kwargs.get("sampleid", None) is not None:
-            ctx.session.active_id = kwargs["sampleid"]
-        else:
-            ctx.session.active_id = f"adata{len(ctx.session.adata_dic)}"
-    else:
-        ctx.session.adata_dic = {}
-        ctx.session.active_id = "adata0"
 
+    result = await forward_request("io_read", kwargs)
+    if result is not None:
+        return result
+    
+    ads = ctx.request_context.lifespan_context
+    if kwargs.get("sampleid", None) is not None:
+        ads.active_id = kwargs["sampleid"]
+    else:
+        ads.active_id = f"adata{len(ads.adata_dic)}"
+
+    file = Path(kwargs.get("filename", None))
     if file.is_dir():
         kwargs["path"] = kwargs["filename"]
         func_kwargs = filter_args(request, sc.read_10x_mtx)
@@ -41,17 +43,20 @@ def read(request: WriteModel, ctx: Context):
     adata.layers["counts"] = adata.X
     adata.var_names_make_unique()
     adata.obs_names_make_unique()
-    ctx.session.adata_dic[ctx.session.active_id] = adata
+    ads.adata_dic[ads.active_id] = adata
     return adata
 
 
+
 @io_mcp.tool()
-def write(request: WriteModel, ctx: Context):
+async def write(request: WriteModel, ctx: Context):
     """save adata into a file.
-    """    
+    """
+    result = await forward_request("io_write", request.model_dump())
+    if result is not None:
+        return result
+    ads = ctx.request_context.lifespan_context
+    adata = ads.adata_dic[ads.active_id]    
     kwargs = request.model_dump()
-    args = request.model_fields_set
-    parameters = inspect.signature(sc.write).parameters
-    func_kwargs = {k: kwargs.get(k) for k in args if k in parameters}
-    sc.write(func_kwargs["filename"], ctx.session.adata_dic[ctx.session.active_id])
-    return {"filename": func_kwargs["filename"], "msg": "success to save file"}
+    sc.write(kwargs["filename"], adata)
+    return {"filename": kwargs["filename"], "msg": "success to save file"}
