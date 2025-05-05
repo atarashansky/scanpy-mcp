@@ -22,6 +22,11 @@ class AdataState:
             return None
         sampleid = sampleid or self.active_id
         return self.adata_dic[sampleid]
+    
+    def set_adata(self, adata, sampleid=None):
+        sampleid = sampleid or self.active_id
+        self.adata_dic[sampleid] = adata
+
 
 ads = AdataState()
 
