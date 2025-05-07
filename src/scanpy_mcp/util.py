@@ -144,7 +144,7 @@ async def forward_request(func, kwargs):
 def obsm2adata(adata, obsm_key):
     from anndata import AnnData
 
-    if key not in adata.obsm_keys():
-        raise ValueError(f"key {key} not found in adata.obsm")
+    if obsm_key not in adata.obsm_keys():
+        raise ValueError(f"key {obsm_key} not found in adata.obsm")
     else:
-        return AnnData(adata.obsm[key], obs=adata.obs)
+        return AnnData(adata.obsm[obsm_key], obs=adata.obs, obsm=adata.obsm)
