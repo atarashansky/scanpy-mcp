@@ -13,6 +13,7 @@ from typing import Optional, Union, Literal, Any, Sequence, Dict
 class ReadModel(BaseModel):
     """Input schema for the read tool."""
     filename: str = Field(
+        ...,
         description="Path to the file to read."
     )
     sampleid: str = Field(

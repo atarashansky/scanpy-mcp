@@ -13,8 +13,7 @@ io_mcp = FastMCP("ScanpyMCP-IO-Server")
 
 @io_mcp.tool()
 async def read(request: ReadModel, ctx: Context):
-    """
-    Read data from various file formats (h5ad, 10x, text files, etc.) or directory path.
+    """Read data from various file formats (h5ad, 10x, text files, etc.) or directory path.
     """
     kwargs = request.model_dump()
 
@@ -44,8 +43,8 @@ async def read(request: ReadModel, ctx: Context):
     adata.var_names_make_unique()
     adata.obs_names_make_unique()
     ads.adata_dic[ads.active_id] = adata
+    logger.info(f"Finish reading {kwargs['filename']}")
     return adata
-
 
 
 @io_mcp.tool()
