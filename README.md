@@ -1,10 +1,10 @@
-# SCMCP
+# Scanpy-MCP
 
-An MCP server for Scanpy with natural language!
+Natural language interface for scRNA-Seq analysis with Scanpy through MCP.
 
 ## 🪩 What can it do?
 
-- IO module like read and write scRNA-Seq data with natural language
+- IO module like read and write scRNA-Seq data
 - Preprocessing module,like filtering, quality control, normalization, scaling, highly-variable genes, PCA, Neighbors,...
 - Tool module, like clustering, differential expression etc.
 - Plotting module, like violin, heatmap, dotplot
@@ -60,12 +60,12 @@ Refer to the following configuration in your MCP client:
 
 run it in your server
 ```
-scanpy-mcp run --transport sse --port 8000
+scanpy-mcp run --transport shttp --port 8000
 ```
 
 Then configure your MCP client, like this:
 ```
-http://localhost:8000/sse
+http://localhost:8000/mcp
 ```
 
 ## 🤝 Contributing
