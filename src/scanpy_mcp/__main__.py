@@ -13,8 +13,7 @@ async def setup():
     await sc_mcp.import_server("tl", tl_mcp) 
     await sc_mcp.import_server("pl", pl_mcp) 
     await sc_mcp.import_server("ul", ul_mcp)
-    await sc_mcp.import_server("ccc", limcp.ccc_mcp)
-    await sc_mcp.import_server("cccpl", limcp.pl_mcp)
+
     
 
 if __name__ == "__main__":
