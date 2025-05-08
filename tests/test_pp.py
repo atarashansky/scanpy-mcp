@@ -17,3 +17,22 @@ async def test_subset_cells(mcp_config):
         # Test filtering with min_genes parameter
         result = await client.call_tool("pp_subset_cells", {"request":{"min_genes": 200}})
         assert "AnnData" in result[0].text
+
+        result = await client.call_tool("pp_calculate_qc_metrics", {"request":{}})        
+        assert "total_counts" in result[0].text
+        result = await client.call_tool("pp_log1p", {"request":{}})
+        assert "log1p" in result[0].text
+
+        result = await client.call_tool("pp_normalize_total", {"request":{}})
+        assert "log1p" in result[0].text
+
+        result = await client.call_tool("pp_highly_variable_genes", {"request":{}})
+        assert "highly_variable" in result[0].text
+
+        result = await client.call_tool("pp_pca", {"request":{"n_comps": 50}})
+        assert "X_pca" in result[0].text
+
+        result = await client.call_tool("pp_neighbors", {"request":{}})
+        assert "neighbors" in result[0].text
+
+
