@@ -61,6 +61,10 @@ def run(
     if transport == Transport.STDIO:
         scanpy_mcp.run()
     elif transport == Transport.SSE:
+        from .util import get_figure
+        from starlette.routing import Route
+
+        scanpy_mcp._additional_http_routes = [Route("/figures/{figure_name}", endpoint=get_figure)]        
         scanpy_mcp.run(
                 transport="sse",
                 host=host, 
@@ -69,6 +73,10 @@ def run(
             )
 
     elif transport == Transport.SHTTP:
+        from .util import get_figure
+        from starlette.routing import Route
+
+        scanpy_mcp._additional_http_routes = [Route("/figures/{figure_name}", endpoint=get_figure)]
         scanpy_mcp.run(
                 transport="streamable-http",
                 host=host, 
