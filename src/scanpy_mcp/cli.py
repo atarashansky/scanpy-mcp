@@ -32,6 +32,7 @@ class Module(str, Enum):
 class Transport(str, Enum):
     STDIO = "stdio"
     SSE = "sse"
+    SHTTP = "shttp"
 
 @app.command(name="run")
 def run(
@@ -40,8 +41,8 @@ def run(
                               case_sensitive=False),
     transport: Transport = typer.Option(Transport.STDIO, "-t", "--transport", help="Specify transport type", 
                                  case_sensitive=False),
-    port: int = typer.Option(8000, "-p", "--port", help="Port for SSE transport"),
-    host: str = typer.Option("127.0.0.1", "--host", help="Host address for SSE transport"),
+    port: int = typer.Option(8000, "-p", "--port", help="transport port"),
+    host: str = typer.Option("127.0.0.1", "--host", help="transport host"),
     forward: str = typer.Option(None, "-f", "--forward", help="forward request to another server"),
 ):
     """Start Scanpy MCP Server"""
@@ -60,13 +61,20 @@ def run(
     if transport == Transport.STDIO:
         scanpy_mcp.run()
     elif transport == Transport.SSE:
-        asyncio.run(
-            scanpy_mcp.run_sse_async(
+        scanpy_mcp.run(
+                transport="sse",
                 host=host, 
                 port=port, 
                 log_level="info"
             )
-        )
+
+    elif transport == Transport.SHTTP:
+        scanpy_mcp.run(
+                transport="streamable-http",
+                host=host, 
+                port=port, 
+                log_level="info"
+            )
 
 @app.callback()
 def main():
