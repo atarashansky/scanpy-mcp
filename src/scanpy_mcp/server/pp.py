@@ -6,7 +6,7 @@ from fastmcp import FastMCP , Context
 from ..schema.pp import *
 from ..util import filter_args, add_op_log, forward_request
 from ..logging_config import setup_logger
-logger = setup_logger(log_file=os.environ.get("SCANPYMCP_LOG_FILE", None))
+logger = setup_logger()
 
 
 pp_mcp = FastMCP("ScanpyMCP-PP-Server")

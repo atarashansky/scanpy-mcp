@@ -4,7 +4,7 @@ import scanpy as sc
 from ..schema.tl import *
 from ..util import filter_args, add_op_log, forward_request
 from ..logging_config import setup_logger
-logger = setup_logger(log_file=os.environ.get("SCANPYMCP_LOG_FILE", None))
+logger = setup_logger()
 
 tl_mcp = FastMCP("ScanpyMCP-TL-Server")
 

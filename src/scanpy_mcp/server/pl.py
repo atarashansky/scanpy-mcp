@@ -8,7 +8,7 @@ from pathlib import Path
 from ..logging_config import setup_logger
 from ..util import filter_args, set_fig_path, add_op_log,forward_request, obsm2adata
 from ..logging_config import setup_logger
-logger = setup_logger(log_file=os.environ.get("SCANPYMCP_LOG_FILE", None))
+logger = setup_logger()
 
 pl_mcp = FastMCP("ScanpyMCP-PL-Server")
 

@@ -5,7 +5,7 @@ import anndata as ad
 from ..schema.util import *
 from ..logging_config import setup_logger
 from ..util import add_op_log,forward_request
-logger = setup_logger(log_file=os.environ.get("SCANPYMCP_LOG_FILE", None))
+logger = setup_logger()
 
 
 ul_mcp = FastMCP("ScanpyMCP-Util-Server")
