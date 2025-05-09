@@ -11,7 +11,7 @@ import typer
 from enum import Enum
 from typing import Optional
 
-
+PKG = __package__.upper()
 
 app = typer.Typer(
     name="scanpymcp",
@@ -49,13 +49,13 @@ def run(
     
     # Set environment variables
     if log_file is not None:
-        os.environ['SCANPYMCP_LOG_FILE'] = log_file
+        os.environ[f'{PKG}_LOG_FILE'] = log_file
     if forward is not None:
-        os.environ['SCANPYMCP_FORWARD'] = forward
-    os.environ['SCANPYMCP_TRANSPORT'] = transport.value
-    os.environ['SCANPYMCP_HOST'] = host
-    os.environ['SCANPYMCP_PORT'] = str(port)
-    os.environ['SCANPYMCP_MODULE'] = module.value
+        os.environ[f'{PKG}_FORWARD'] = forward
+    os.environ[f'{PKG}_TRANSPORT'] = transport.value
+    os.environ[f'{PKG}_HOST'] = host
+    os.environ[f'{PKG}_PORT'] = str(port)
+    os.environ[f'{PKG}_MODULE'] = module.value
     from .server import scanpy_mcp, setup
     asyncio.run(setup())
     if transport == Transport.STDIO:

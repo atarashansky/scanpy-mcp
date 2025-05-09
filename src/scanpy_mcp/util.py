@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from starlette.responses import FileResponse, Response
 
+PKG = __package__.upper()
 
 def filter_args(request, func):
     # sometime,it is a bit redundant, but I think it adds robustness in case the function parameters change
@@ -46,7 +47,7 @@ def add_op_log(adata, func, kwargs):
     adata.uns["operation"]["op"][hash_key] = {func_name: new_kwargs}
     adata.uns["operation"]["opid"].append(hash_key)
     from .logging_config import setup_logger
-    logger = setup_logger(log_file=os.environ.get("SCANPYMCP_LOG_FILE", None))
+    logger = setup_logger(log_file=os.environ.get(f"{PKG}_LOG_FILE", None))
     logger.info(f"{func}: {new_kwargs}")
 
 
@@ -91,11 +92,11 @@ def set_fig_path(func, **kwargs):
     except PermissionError:
         print("You don't have permission to rename this file")
 
-    if os.environ.get("SCANPYMCP_TRANSPORT") == "stdio":
+    if os.environ.get(f"{PKG}_TRANSPORT") == "stdio":
         return fig_path
     else:
-        host = os.environ.get("SCANPYMCP_HOST")
-        port = os.environ.get("SCANPYMCP_PORT")
+        host = os.environ.get(f"{PKG}_HOST")
+        port = os.environ.get(f"{PKG}_PORT")
         fig_path = f"http://{host}:{port}/figures/{Path(fig_path).name}"
         return fig_path
 
@@ -131,13 +132,13 @@ async def get_figure(request):
 async def forward_request(func, kwargs):
     from fastmcp import Client
 
-    forward_url = os.environ.get("SCANPYMCP_FORWARD", False)
+    forward_url = os.environ.get(f"{PKG}_FORWARD", False)
     if not forward_url:
         return None
         
     client = Client(forward_url)
     async with client:
-        result = await client.call_tool(func, {"request": kwargs}, _return_raw_result=True)
+        result = await client.call_tool(func, {"request": kwargs})
     return result
 
 
