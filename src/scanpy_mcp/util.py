@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from starlette.responses import FileResponse, Response
 
-PKG = __package__.upper()
+PKG = __package__.split('.')[0].upper()
 
 def filter_args(request, func):
     # sometime,it is a bit redundant, but I think it adds robustness in case the function parameters change
@@ -92,11 +92,12 @@ def set_fig_path(func, **kwargs):
     except PermissionError:
         print("You don't have permission to rename this file")
 
-    if os.environ.get(f"{PKG}_TRANSPORT") == "stdio":
+    transport = os.environ.get(f"{PKG}_TRANSPORT") or os.environ.get("SCMCP_TRANSPORT")
+    if transport == "stdio":
         return fig_path
     else:
-        host = os.environ.get(f"{PKG}_HOST")
-        port = os.environ.get(f"{PKG}_PORT")
+        host = os.environ.get(f"{PKG}_HOST") or os.environ.get("SCMCP_HOST")
+        port = os.environ.get(f"{PKG}_PORT") or os.environ.get("SCMCP_PORT")
         fig_path = f"http://{host}:{port}/figures/{Path(fig_path).name}"
         return fig_path
 
@@ -129,18 +130,26 @@ async def get_figure(request):
     return FileResponse(figure_path)
 
 
-async def forward_request(func, kwargs):
+async def forward_request(func, request, **kwargs):
     from fastmcp import Client
 
-    forward_url = os.environ.get(f"{PKG}_FORWARD", False)
+    forward_url = os.environ.get(f"{PKG}_FORWARD")
+    request_kwargs = request.model_dump()
+    request_args = request.model_fields_set
+    func_kwargs = {"request": {k: request_kwargs.get(k) for k in request_args}}
+    func_kwargs.update({k:v for k,v in kwargs.items() if v is not None})
     if not forward_url:
         return None
         
     client = Client(forward_url)
     async with client:
-        result = await client.call_tool(func, {"request": kwargs})
-    return result
-
+        tools = await client.list_tools()
+        func = [t.name for t in tools if t.name.endswith(func)][0]
+        try:
+            result = await client.call_tool(func, func_kwargs)
+            return result
+        except Exception as e:
+            raise e
 
 def obsm2adata(adata, obsm_key):
     from anndata import AnnData
