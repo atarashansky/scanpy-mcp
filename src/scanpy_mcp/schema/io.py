@@ -16,10 +16,7 @@ class ReadModel(BaseModel):
         ...,
         description="Path to the file to read."
     )
-    sampleid: str = Field(
-        default=None,
-        description="Sample identifier to mark and distinguish different samples."
-    )    
+
     backed: Literal['r', 'r+'] = Field(
         default=None,
         description="If 'r', load AnnData in 'backed' mode instead of fully loading it into memory ('memory' mode). If you want to modify backed attributes of the AnnData object, you need to choose 'r+'."
