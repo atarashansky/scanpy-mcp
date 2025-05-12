@@ -14,18 +14,24 @@ from .util import ul_mcp
 
 class AdataState:
     def __init__(self):
-        self.adata_dic = {}
+        self.adata_dic = {"exp": {}}
         self.active_id = None
-
-    def get_adata(self, sampleid=None):
-        if self.active_id is None:
-            return None
-        sampleid = sampleid or self.active_id
-        return self.adata_dic[sampleid]
+        self.metadata = {}
+        
+    def get_adata(self, sampleid=None, dtype="exp"):
+        try:
+            if self.active_id is None:
+                return None
+            sampleid = sampleid or self.active_id
+            return self.adata_dic[dtype][sampleid]
+        except KeyError as e:
+            raise KeyError(f"Key {e} not found in adata_dic")
+        except Exception as e:
+            raise Exception(f"Error: {e}")
     
-    def set_adata(self, adata, sampleid=None):
+    def set_adata(self, adata, sampleid=None, sdtype="exp"):
         sampleid = sampleid or self.active_id
-        self.adata_dic[sampleid] = adata
+        self.adata_dic[sdtype][sampleid] = adata
 
 
 ads = AdataState()
@@ -38,9 +44,15 @@ async def adata_lifespan(server: FastMCP) -> AsyncIterator[Any]:
 scanpy_mcp = FastMCP("Scanpy-MCP-Server", lifespan=adata_lifespan)
 
 
-async def setup():
-    await scanpy_mcp.import_server("io", io_mcp)
-    await scanpy_mcp.import_server("pp", pp_mcp)
-    await scanpy_mcp.import_server("tl", tl_mcp) 
-    await scanpy_mcp.import_server("pl", pl_mcp) 
-    await scanpy_mcp.import_server("ul", ul_mcp)
+async def setup(modules=None):
+    mcp_dic = {
+        "io": io_mcp, 
+        "pp": pp_mcp, 
+        "tl": tl_mcp, 
+        "pl": pl_mcp, 
+        "ul": ul_mcp
+        }
+    if modules is None or modules == "all":
+        modules = ["io", "pp", "tl", "pl", "ul"]
+    for module in modules:
+        await scanpy_mcp.import_server(module, mcp_dic[module])
