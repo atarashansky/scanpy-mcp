@@ -92,8 +92,6 @@ async def violin(
         func_kwargs.pop("return_fig", True)
         func_kwargs["show"] = False
         func_kwargs["save"] = ".png"
-        if request.use_obsm is not None:
-            adata = obsm2adata(adata, request.use_obsm)
         fig = sc.pl.violin(adata, **func_kwargs)
         fig_path = set_fig_path("violin", **func_kwargs)
         add_op_log(adata, sc.pl.violin, func_kwargs)
@@ -228,6 +226,7 @@ async def matrixplot(
         else:
             raise e 
 
+
 @pl_mcp.tool()
 async def tracksplot(
     request: TracksplotModel, 
@@ -307,15 +306,10 @@ async def embedding(
         func_kwargs.pop("return_fig", True)
         func_kwargs["show"] = False
         func_kwargs["save"] = ".png"
-        if request.use_obsm is not None:
-            adata = obsm2adata(adata, request.use_obsm)
         try:      
             fig = sc.pl.embedding(adata, **func_kwargs)
         except KeyError as e:
-            if request.use_obsm is None:
-                raise KeyError(f"Key '{e}' not found in adata.var and adata.obs")
-            else:
-                raise KeyError(f"Key '{e}' not found in adata.obsm")
+            raise KeyError(f"Key '{e}' not found in adata.var and adata.obs. please check {e}, or {dtype}.")
         except Exception as e:
             raise e
         fig_path = set_fig_path("embedding", **func_kwargs)
