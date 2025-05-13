@@ -25,7 +25,7 @@ class AdataState:
             sampleid = sampleid or self.active_id
             return self.adata_dic[dtype][sampleid]
         except KeyError as e:
-            raise KeyError(f"Key {e} not found in adata_dic")
+            raise KeyError(f"Key {e} not found in adata_dic[{dtype}].Please check the sampleid or dtype.")
         except Exception as e:
             raise Exception(f"Error: {e}")
     
