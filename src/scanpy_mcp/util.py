@@ -51,19 +51,18 @@ def add_op_log(adata, func, kwargs):
     logger.info(f"{func}: {new_kwargs}")
 
 
-def savefig(fig, file, format="png"):
+
+def savefig(fig, file):
     try:
-        # 确保父目录存在
         file_path = Path(file)
         file_path.parent.mkdir(parents=True, exist_ok=True)
-        
         if hasattr(fig, 'figure'):  # if Axes
-            fig.figure.savefig(file, format=format)
+            fig.figure.savefig(file_path)
         elif hasattr(fig, 'save'):  # for plotnine.ggplot.ggplot
-            fig.save(file, format=format)
+            fig.save(file_path)
         else:  # if Figure 
-            fig.savefig(file, format=format)
-        return file
+            fig.savefig(file_path)
+        return file_path
     except Exception as e:
         raise e
 
@@ -77,9 +76,9 @@ def set_fig_path(func, fig=None, **kwargs):
     args = []
     for k,v in kwargs.items():
         if isinstance(v, (tuple, list, set)):
-            args.append(f"{k}:{'-'.join([str(i) for i in v])}")
+            args.append(f"{k}-{'-'.join([str(i) for i in v])}")
         else:
-            args.append(f"{k}:{v}")
+            args.append(f"{k}-{v}")
     args_str = "_".join(args)
     if func == "rank_genes_groups_dotplot":
         old_path = fig_dir / 'dotplot_.png'
@@ -102,9 +101,10 @@ def set_fig_path(func, fig=None, **kwargs):
         fig_path = fig_dir / f"{func}_{args_str}.png"
     try:
         if fig is not None:
-            fig_path = savefig(fig, fig_path, format="png")
+            savefig(fig, fig_path)
         else:
             os.rename(old_path, fig_path)
+        return fig_path
     except FileNotFoundError:
         print(f"The file {old_path} does not exist")
     except FileExistsError:
@@ -120,6 +120,7 @@ def set_fig_path(func, fig=None, **kwargs):
         port = os.environ.get(f"{PKG}_PORT") or os.environ.get("SCMCP_PORT")
         fig_path = f"http://{host}:{port}/figures/{Path(fig_path).name}"
         return fig_path
+
 
 
 async def get_figure(request):
