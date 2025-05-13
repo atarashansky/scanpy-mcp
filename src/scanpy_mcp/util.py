@@ -51,7 +51,24 @@ def add_op_log(adata, func, kwargs):
     logger.info(f"{func}: {new_kwargs}")
 
 
-def set_fig_path(func, **kwargs):
+def savefig(fig, file, format="png"):
+    try:
+        # 确保父目录存在
+        file_path = Path(file)
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        if hasattr(fig, 'figure'):  # if Axes
+            fig.figure.savefig(file, format=format)
+        elif hasattr(fig, 'save'):  # for plotnine.ggplot.ggplot
+            fig.save(file, format=format)
+        else:  # if Figure 
+            fig.savefig(file, format=format)
+        return file
+    except Exception as e:
+        raise e
+
+
+def set_fig_path(func, fig=None, **kwargs):
     "maybe I need to save figure by myself, instead of using scanpy save function..."
     fig_dir = Path(os.getcwd()) / "figures"
 
@@ -84,7 +101,10 @@ def set_fig_path(func, **kwargs):
             old_path = fig_dir / f"{func}.png"
         fig_path = fig_dir / f"{func}_{args_str}.png"
     try:
-        os.rename(old_path, fig_path)
+        if fig is not None:
+            fig_path = savefig(fig, fig_path, format="png")
+        else:
+            os.rename(old_path, fig_path)
     except FileNotFoundError:
         print(f"The file {old_path} does not exist")
     except FileExistsError:
@@ -100,23 +120,6 @@ def set_fig_path(func, **kwargs):
         port = os.environ.get(f"{PKG}_PORT") or os.environ.get("SCMCP_PORT")
         fig_path = f"http://{host}:{port}/figures/{Path(fig_path).name}"
         return fig_path
-
-
-def savefig(fig, file, format="png"):
-    try:
-        # 确保父目录存在
-        file_path = Path(file)
-        file_path.parent.mkdir(parents=True, exist_ok=True)
-        
-        if hasattr(fig, 'figure'):  # if Axes
-            fig.figure.savefig(file, format=format)
-        elif hasattr(fig, 'save'):  # for plotnine.ggplot.ggplot
-            fig.save(file, format=format)
-        else:  # if Figure 
-            fig.savefig(file, format=format)
-        return file
-    except Exception as e:
-        raise e
 
 
 async def get_figure(request):
