@@ -16,10 +16,10 @@ pl_mcp = FastMCP("ScanpyMCP-PL-Server")
 
 @pl_mcp.tool()
 async def pca(
-    request: PCAModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
+    request: PCAModel = PCAModel() 
 ):
     """Scatter plot in PCA coordinates. default figure for PCA plot"""
     try:
@@ -45,10 +45,10 @@ async def pca(
 
 @pl_mcp.tool()
 async def diffmap(
-    request: DiffusionMapModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
+    request: DiffusionMapModel = DiffusionMapModel() 
 ):
     """Plot diffusion map embedding of cells."""
     try:
@@ -76,10 +76,10 @@ async def diffmap(
 
 @pl_mcp.tool()
 async def violin(
-    request: ViolinModel, 
     ctx: Context,
+    request: ViolinModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
 ):
     """Plot violin plot of one or more variables."""
     try:
@@ -105,10 +105,10 @@ async def violin(
 
 @pl_mcp.tool()
 async def stacked_violin(
-    request: StackedViolinModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
+    request: StackedViolinModel = StackedViolinModel() 
 ):
     """Plot stacked violin plots. Makes a compact image composed of individual violin plots stacked on top of each other."""
     try:
@@ -136,10 +136,11 @@ async def stacked_violin(
 
 @pl_mcp.tool()
 async def heatmap(
-    request: HeatmapModel, 
     ctx: Context,
+    request: HeatmapModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
+
 ):
     """Heatmap of the expression values of genes."""
     try:
@@ -167,10 +168,10 @@ async def heatmap(
 
 @pl_mcp.tool()
 async def dotplot(
-    request: DotplotModel, 
     ctx: Context,
+    request: DotplotModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
 ):
     """Plot dot plot of expression values per gene for each group."""
     try:
@@ -197,10 +198,10 @@ async def dotplot(
 
 @pl_mcp.tool()
 async def matrixplot(
-    request: MatrixplotModel, 
     ctx: Context,
+    request: MatrixplotModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
 ):
     """matrixplot, Create a heatmap of the mean expression values per group of each var_names."""
     try:
@@ -229,10 +230,10 @@ async def matrixplot(
 
 @pl_mcp.tool()
 async def tracksplot(
-    request: TracksplotModel, 
     ctx: Context,
+    request: TracksplotModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
 ):
     """tracksplot, compact plot of expression of a list of genes."""
     try:
@@ -259,10 +260,10 @@ async def tracksplot(
 
 @pl_mcp.tool()
 async def scatter(
-    request: EnhancedScatterModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
+    request: EnhancedScatterModel = EnhancedScatterModel() 
 ):
     """Plot a scatter plot of two variables, Scatter plot along observations or variables axes."""
     try:
@@ -289,10 +290,11 @@ async def scatter(
 
 @pl_mcp.tool()
 async def embedding(
-    request: EmbeddingModel, 
     ctx: Context,
+    request: EmbeddingModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
+    
 ):
     """Scatter plot for user specified embedding basis (e.g. umap, tsne, etc)."""
     try:
@@ -324,10 +326,10 @@ async def embedding(
 
 @pl_mcp.tool()
 async def embedding_density(
-    request: EmbeddingDensityModel, 
     ctx: Context,
+    request: EmbeddingDensityModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
 ):
     """Plot the density of cells in an embedding."""
     try:
@@ -354,10 +356,10 @@ async def embedding_density(
 
 @pl_mcp.tool()
 async def rank_genes_groups(
-    request: RankGenesGroupsModel, 
     ctx: Context,
+    request: RankGenesGroupsModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
 ):
     """Plot ranking of genes based on differential expression."""
     try:
@@ -385,10 +387,10 @@ async def rank_genes_groups(
 
 @pl_mcp.tool()
 async def rank_genes_groups_dotplot(
-    request: RankGenesGroupsDotplotModel, 
     ctx: Context,
+    request: RankGenesGroupsDotplotModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
 ):
     """Plot ranking of genes(DEGs) using dotplot visualization. Defualt plot DEGs for rank_genes_groups tool"""
     try:
@@ -416,10 +418,10 @@ async def rank_genes_groups_dotplot(
 
 @pl_mcp.tool()
 async def clustermap(
-    request: ClusterMapModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
+    request: ClusterMapModel = ClusterMapModel() 
 ):
     """Plot hierarchical clustering of cells and genes."""
     try:
@@ -446,10 +448,10 @@ async def clustermap(
 
 @pl_mcp.tool()
 async def highly_variable_genes(
-    request: HighlyVariableGenesModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
+    request: HighlyVariableGenesModel = HighlyVariableGenesModel() 
 ):
     """plot highly variable genes; Plot dispersions or normalized variance versus means for genes."""
     try:
@@ -477,10 +479,10 @@ async def highly_variable_genes(
 
 @pl_mcp.tool()
 async def pca_variance_ratio(
-    request: PCAVarianceRatioModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for plotting")
+    sampleid: str = Field(default=None, description="adata sampleid for plotting"),
+    request: PCAVarianceRatioModel = PCAVarianceRatioModel() 
 ):
     """Plot the PCA variance ratio to visualize explained variance."""
     try:

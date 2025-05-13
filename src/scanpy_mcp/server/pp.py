@@ -14,10 +14,10 @@ pp_mcp = FastMCP("ScanpyMCP-PP-Server")
 
 @pp_mcp.tool()
 async def subset_cells(
-    request: SubsetCellModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for preprocessing")
+    sampleid: str = Field(default=None, description="adata sampleid for preprocessing"),
+    request: SubsetCellModel = SubsetCellModel() 
 ):
     """filter or subset cells based on total genes expressed counts and numbers. or values in adata.obs[obs_key]"""
 
@@ -63,10 +63,10 @@ async def subset_cells(
 
 @pp_mcp.tool()
 async def subset_genes(
-    request: SubsetGeneModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for preprocessing")
+    sampleid: str = Field(default=None, description="adata sampleid for preprocessing"),
+    request: SubsetGeneModel = SubsetGeneModel() 
 ):
     """filter or subset genes based on number of cells or counts, or values in adata.var[var_key] or subset highly variable genes""" 
     try:
@@ -108,10 +108,10 @@ async def subset_genes(
 
 @pp_mcp.tool()
 async def calculate_qc_metrics(
-    request: CalculateQCMetrics, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for preprocessing")
+    sampleid: str = Field(default=None, description="adata sampleid for preprocessing"),
+    request: CalculateQCMetrics = CalculateQCMetrics() 
 ):
     """Calculate quality control metrics(common metrics: total counts, gene number, percentage of counts in ribosomal and mitochondrial) for AnnData."""
 
@@ -141,10 +141,10 @@ async def calculate_qc_metrics(
 
 @pp_mcp.tool()
 async def log1p(
-    request: Log1PModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for preprocessing")
+    sampleid: str = Field(default=None, description="adata sampleid for preprocessing"),
+    request: Log1PModel = Log1PModel() 
 ):
     """Logarithmize the data matrix (X = log(X + 1))"""
 
@@ -174,10 +174,10 @@ async def log1p(
 
 @pp_mcp.tool()
 async def normalize_total(
-    request: NormalizeTotalModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for preprocessing")
+    sampleid: str = Field(default=None, description="adata sampleid for preprocessing"),
+    request: NormalizeTotalModel = NormalizeTotalModel() 
 ):
     """Normalize counts per cell to the same total count"""
 
@@ -203,10 +203,10 @@ async def normalize_total(
 
 @pp_mcp.tool()
 async def pca(
-    request: PCAModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for preprocessing")
+    sampleid: str = Field(default=None, description="adata sampleid for preprocessing"),
+    request: PCAModel = PCAModel() 
 ):
     """Principal component analysis"""
 
@@ -230,10 +230,10 @@ async def pca(
 
 @pp_mcp.tool()
 async def highly_variable_genes(
-    request: HighlyVariableGenesModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for preprocessing")
+    sampleid: str = Field(default=None, description="adata sampleid for preprocessing"),
+    request: HighlyVariableGenesModel = HighlyVariableGenesModel() 
 ):
     """Annotate highly variable genes"""
 
@@ -261,10 +261,11 @@ async def highly_variable_genes(
 
 @pp_mcp.tool()
 async def regress_out(
-    request: RegressOutModel, 
     ctx: Context,
+    request: RegressOutModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for preprocessing")
+    sampleid: str = Field(default=None, description="adata sampleid for preprocessing"),
+    
 ):
     """Regress out (mostly) unwanted sources of variation."""
 
@@ -291,10 +292,10 @@ async def regress_out(
 
 @pp_mcp.tool()
 async def scale(
-    request: ScaleModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for preprocessing")
+    sampleid: str = Field(default=None, description="adata sampleid for preprocessing"),
+    request: ScaleModel = ScaleModel() 
 ):
     """Scale data to unit variance and zero mean"""
 
@@ -321,10 +322,10 @@ async def scale(
 
 @pp_mcp.tool()
 async def combat(
-    request: CombatModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for preprocessing")
+    sampleid: str = Field(default=None, description="adata sampleid for preprocessing"),
+    request: CombatModel = CombatModel() 
 ):
     """ComBat function for batch effect correction"""
 
@@ -351,10 +352,10 @@ async def combat(
 
 @pp_mcp.tool()
 async def scrublet(
-    request: ScrubletModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for preprocessing")
+    sampleid: str = Field(default=None, description="adata sampleid for preprocessing"),
+    request: ScrubletModel = ScrubletModel() 
 ):
     """Predict doublets using Scrublet"""
 
@@ -378,10 +379,10 @@ async def scrublet(
 
 @pp_mcp.tool()
 async def neighbors(
-    request: NeighborsModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for preprocessing")
+    sampleid: str = Field(default=None, description="adata sampleid for preprocessing"),
+    request: NeighborsModel = NeighborsModel() 
 ):
     """Compute nearest neighbors distance matrix and neighborhood graph"""
 
@@ -401,4 +402,4 @@ async def neighbors(
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e

@@ -11,10 +11,10 @@ tl_mcp = FastMCP("ScanpyMCP-TL-Server")
 
 @tl_mcp.tool()
 async def tsne(
-    request: TSNEModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: TSNEModel = TSNEModel() 
 ):
     """t-distributed stochastic neighborhood embedding (t-SNE) for visualization"""
 
@@ -39,10 +39,10 @@ async def tsne(
 
 @tl_mcp.tool()
 async def umap(
-    request: UMAPModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: UMAPModel = UMAPModel() 
 ):
     """Uniform Manifold Approximation and Projection (UMAP) for visualization"""
 
@@ -66,9 +66,11 @@ async def umap(
 
 
 @tl_mcp.tool()
-async def draw_graph(request: DrawGraphModel, ctx: Context,
+async def draw_graph(
+    ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: DrawGraphModel = DrawGraphModel() 
 ):
     """Force-directed graph drawing"""
 
@@ -91,9 +93,11 @@ async def draw_graph(request: DrawGraphModel, ctx: Context,
             raise e 
 
 @tl_mcp.tool()
-async def diffmap(request: DiffMapModel, ctx: Context,
+async def diffmap(
+    ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: DiffMapModel = DiffMapModel() 
 ):
     """Diffusion Maps for dimensionality reduction"""
 
@@ -117,9 +121,11 @@ async def diffmap(request: DiffMapModel, ctx: Context,
             raise e 
 
 @tl_mcp.tool()
-async def embedding_density(request: EmbeddingDensityModel, ctx: Context,
+async def embedding_density(
+    ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: EmbeddingDensityModel = EmbeddingDensityModel() 
 ):
     """Calculate the density of cells in an embedding"""
 
@@ -143,9 +149,11 @@ async def embedding_density(request: EmbeddingDensityModel, ctx: Context,
 
 
 @tl_mcp.tool()
-async def leiden(request: LeidenModel, ctx: Context,
+async def leiden(
+    ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: LeidenModel = LeidenModel() 
 ):
     """Leiden clustering algorithm for community detection"""
 
@@ -169,9 +177,11 @@ async def leiden(request: LeidenModel, ctx: Context,
 
 
 @tl_mcp.tool()
-async def louvain(request: LouvainModel, ctx: Context,
+async def louvain(
+    ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: LouvainModel = LouvainModel() 
 ):
     """Louvain clustering algorithm for community detection"""
 
@@ -195,9 +205,11 @@ async def louvain(request: LouvainModel, ctx: Context,
 
 
 @tl_mcp.tool()
-async def dendrogram(request: DendrogramModel, ctx: Context,
+async def dendrogram(
+    ctx: Context,
+    request: DendrogramModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
 ):
     """Hierarchical clustering dendrogram"""
 
@@ -221,9 +233,11 @@ async def dendrogram(request: DendrogramModel, ctx: Context,
 
 
 @tl_mcp.tool()
-async def dpt(request: DPTModel, ctx: Context,
+async def dpt(
+    ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: DPTModel = DPTModel() 
 ):
     """Diffusion Pseudotime (DPT) analysis"""
 
@@ -247,9 +261,11 @@ async def dpt(request: DPTModel, ctx: Context,
 
 
 @tl_mcp.tool()
-async def paga(request: PAGAModel, ctx: Context,
+async def paga(
+    ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: PAGAModel = PAGAModel() 
 ):
     """Partition-based graph abstraction"""
 
@@ -273,9 +289,11 @@ async def paga(request: PAGAModel, ctx: Context,
 
 
 @tl_mcp.tool()
-async def ingest(request: IngestModel, ctx: Context,
+async def ingest(
+    ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: IngestModel = IngestModel() 
 ):
     """Map labels and embeddings from reference data to new data"""
 
@@ -298,9 +316,12 @@ async def ingest(request: IngestModel, ctx: Context,
             raise e 
 
 @tl_mcp.tool()
-async def rank_genes_groups(request: RankGenesGroupsModel, ctx: Context,
+async def rank_genes_groups(
+    ctx: Context,
+    request: RankGenesGroupsModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+
 ):
     """Rank genes for characterizing groups, for differentially expressison analysis"""
 
@@ -324,7 +345,12 @@ async def rank_genes_groups(request: RankGenesGroupsModel, ctx: Context,
 
 
 @tl_mcp.tool()
-async def filter_rank_genes_groups(request: FilterRankGenesGroupsModel, ctx: Context):
+async def filter_rank_genes_groups(
+    ctx: Context,
+    dtype: str = Field(default="exp", description="the datatype of anndata.X"),
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: FilterRankGenesGroupsModel = FilterRankGenesGroupsModel() 
+):
     """Filter out genes based on fold change and fraction of genes"""
 
     try:
@@ -347,9 +373,11 @@ async def filter_rank_genes_groups(request: FilterRankGenesGroupsModel, ctx: Con
 
 
 @tl_mcp.tool()
-async def marker_gene_overlap(request: MarkerGeneOverlapModel, ctx: Context,
+async def marker_gene_overlap(
+    ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: MarkerGeneOverlapModel = MarkerGeneOverlapModel() 
 ):
     """Calculate overlap between data-derived marker genes and reference markers"""
 
@@ -372,9 +400,12 @@ async def marker_gene_overlap(request: MarkerGeneOverlapModel, ctx: Context,
             raise e 
 
 @tl_mcp.tool()
-async def score_genes(request: ScoreGenesModel, ctx: Context,
+async def score_genes(
+    ctx: Context,
+    request: ScoreGenesModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    
 ):
     """Score a set of genes based on their average expression"""
     try:
@@ -396,9 +427,12 @@ async def score_genes(request: ScoreGenesModel, ctx: Context,
             raise e 
 
 @tl_mcp.tool()
-async def score_genes_cell_cycle(request: ScoreGenesCellCycleModel, ctx: Context,
+async def score_genes_cell_cycle(
+    ctx: Context,
+    request: ScoreGenesCellCycleModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    
 ):
     """Score cell cycle genes and assign cell cycle phases"""
 

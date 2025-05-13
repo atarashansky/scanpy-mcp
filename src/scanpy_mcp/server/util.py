@@ -12,9 +12,11 @@ ul_mcp = FastMCP("ScanpyMCP-Util-Server")
 
 
 @ul_mcp.tool()
-async def mark_var(request: MarkVarModel, ctx: Context,
+async def mark_var(
+    ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: MarkVarModel = MarkVarModel() 
 ):
     """
     Determine if each gene meets specific conditions and store results in adata.var as boolean values.
@@ -66,10 +68,10 @@ async def mark_var(request: MarkVarModel, ctx: Context,
 
 @ul_mcp.tool()
 async def list_var(
-    request: ListVarModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: ListVarModel = ListVarModel() 
 ):
     """List key columns in adata.var. It should be called for checking when other tools need var key column names as input."""
     try:
@@ -89,10 +91,10 @@ async def list_var(
 
 @ul_mcp.tool()
 async def list_obs(
-    request: ListObsModel, 
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: ListObsModel = ListObsModel() 
 ):
     """List key columns in adata.obs. It should be called before other tools need obs key column names input."""
     try:
@@ -112,10 +114,10 @@ async def list_obs(
 
 @ul_mcp.tool()
 async def check_gene(
-    request: VarNamesModel,
     ctx: Context,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: VarNamesModel = VarNamesModel() 
 ):
     """Check if genes exist in adata.var_names. This tool should be called before gene expression visualizations or color by genes."""
     try:
@@ -136,9 +138,10 @@ async def check_gene(
 
 @ul_mcp.tool()
 async def merge_adata(
-    request: ConcatAdataModel, 
     ctx: Context,
-    dtype: str = Field(default="exp", description="the datatype of anndata.X")
+    dtype: str = Field(default="exp", description="the datatype of anndata.X"),
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    request: ConcatAdataModel = ConcatAdataModel() 
 ):
     """Merge multiple adata objects."""
      
@@ -163,10 +166,11 @@ async def merge_adata(
 
 @ul_mcp.tool()
 async def set_dpt_iroot(
-    request: DPTIROOTModel, 
     ctx: Context,
+    request: DPTIROOTModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
+    
 ):
     """Set the iroot cell"""
     try:
@@ -197,10 +201,10 @@ async def set_dpt_iroot(
 
 @ul_mcp.tool()
 async def add_layer(
-    request: AddLayerModel, 
     ctx: Context,
+    request: AddLayerModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
 ):
     """Add a layer to the AnnData object.
     """
@@ -233,10 +237,10 @@ async def add_layer(
 
 @ul_mcp.tool()
 async def map_cell_type(
-    request: CelltypeMapCellTypeModel, 
     ctx: Context,
+    request: CelltypeMapCellTypeModel,
     dtype: str = Field(default="exp", description="the datatype of anndata.X"),
-    sampleid: str = Field(default=None, description="adata sampleid for analysis")
+    sampleid: str = Field(default=None, description="adata sampleid for analysis"),
 ):
     """Map cluster id to cell type names"""
     try:
