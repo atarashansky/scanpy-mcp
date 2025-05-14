@@ -4,8 +4,9 @@ from pathlib import Path
 import scanpy as sc
 from fastmcp import FastMCP , Context
 from ..schema.io import *
-from ..util import filter_args, forward_request
-from ..logging_config import setup_logger
+from scmcp_shared.util import filter_args, forward_request
+from scmcp_shared.logging_config import setup_logger
+
 logger = setup_logger()
 
 io_mcp = FastMCP("ScanpyMCP-IO-Server")
@@ -50,6 +51,8 @@ async def read(
         adata.obs_names_make_unique()
         ads.set_adata(adata, sampleid=sampleid, sdtype=dtype)
         return {"sampleid": sampleid or ads.active_id, "dtype": dtype, "adata": adata}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
@@ -75,8 +78,10 @@ async def write(
         kwargs = request.model_dump()
         sc.write(kwargs["filename"], adata)
         return {"filename": kwargs["filename"], "msg": "success to save file"}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e    
+            raise e

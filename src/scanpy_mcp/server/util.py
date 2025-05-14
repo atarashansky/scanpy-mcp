@@ -3,8 +3,8 @@ from fastmcp import FastMCP, Context
 import os
 import anndata as ad
 from ..schema.util import *
-from ..logging_config import setup_logger
-from ..util import add_op_log,forward_request
+from scmcp_shared.logging_config import setup_logger
+from scmcp_shared.util import add_op_log,forward_request
 logger = setup_logger()
 
 
@@ -59,11 +59,13 @@ async def mark_var(
         func_kwargs = {"var_name": var_name, "gene_class": gene_class, "pattern_type": pattern_type, "patterns": patterns}
         add_op_log(adata, "mark_var", func_kwargs)
         return res
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 
 @ul_mcp.tool()
@@ -83,11 +85,13 @@ async def list_var(
         columns = list(adata.var.columns)
         add_op_log(adata, list_var, {})
         return columns
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @ul_mcp.tool()
 async def list_obs(
@@ -106,11 +110,13 @@ async def list_obs(
         columns = list(adata.obs.columns)
         add_op_log(adata, list_obs, {})
         return columns
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @ul_mcp.tool()
 async def check_gene(
@@ -130,11 +136,13 @@ async def check_gene(
         result = {v: v in adata.var_names for v in var_names}
         add_op_log(adata, check_gene, {"var_names": var_names})
         return result
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @ul_mcp.tool()
 async def merge_adata(
@@ -157,11 +165,13 @@ async def merge_adata(
         add_op_log(merged_adata, ad.concat, kwargs)
         ads.adata_dic[ads.active_id] = merged_adata
         return {"status": "success", "message": "Successfully merged all AnnData objects"}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 
 @ul_mcp.tool()
@@ -193,11 +203,13 @@ async def set_dpt_iroot(
         add_op_log(adata, "set_dpt_iroot", func_kwargs)
         
         return {"status": "success", "message": f"Successfully set root cell for DPT using {direction} of dimension {dimension}"}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e     
+            raise e
 
 @ul_mcp.tool()
 async def add_layer(
@@ -229,11 +241,13 @@ async def add_layer(
             "status": "success", 
             "message": f"Successfully added layer '{layer_name}' to adata.layers"
         }
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @ul_mcp.tool()
 async def map_cell_type(
@@ -268,11 +282,13 @@ async def map_cell_type(
             "message": f"Successfully mapped values from '{cluster_key}' to '{added_key}'",
             "adata": adata
         }
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @ul_mcp.tool()
 async def check_samples(ctx: Context):
@@ -281,6 +297,8 @@ async def check_samples(ctx: Context):
     try:
         ads = ctx.request_context.lifespan_context
         return {"sampleid": [list(ads.adata_dic[dk].keys()) for dk in ads.adata_dic.keys()]}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")

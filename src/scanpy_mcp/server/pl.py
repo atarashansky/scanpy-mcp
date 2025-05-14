@@ -5,9 +5,9 @@ import scanpy as sc
 from fastmcp import FastMCP, Context
 from ..schema.pl import *
 from pathlib import Path
-from ..logging_config import setup_logger
-from ..util import filter_args, set_fig_path, add_op_log,forward_request, obsm2adata
-from ..logging_config import setup_logger
+from scmcp_shared.logging_config import setup_logger
+from scmcp_shared.util import filter_args, set_fig_path, add_op_log,forward_request, obsm2adata
+
 logger = setup_logger()
 
 pl_mcp = FastMCP("ScanpyMCP-PL-Server")
@@ -37,11 +37,13 @@ async def pca(
         fig_path = set_fig_path("pca", **func_kwargs)
         add_op_log(adata, sc.pl.pca, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e    
+            raise e 
 
 @pl_mcp.tool()
 async def diffmap(
@@ -67,12 +69,13 @@ async def diffmap(
         fig_path = set_fig_path("diffmap", **func_kwargs)
         add_op_log(adata, sc.pl.diffmap, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e    
-
+            raise e
 
 @pl_mcp.tool()
 async def violin(
@@ -96,11 +99,13 @@ async def violin(
         fig_path = set_fig_path("violin", **func_kwargs)
         add_op_log(adata, sc.pl.violin, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e    
+            raise e
 
 
 @pl_mcp.tool()
@@ -127,11 +132,13 @@ async def stacked_violin(
         fig_path = set_fig_path("stacked_violin", **func_kwargs)
         add_op_log(adata, sc.pl.stacked_violin, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 
 @pl_mcp.tool()
@@ -159,11 +166,13 @@ async def heatmap(
         fig_path = set_fig_path("heatmap", **func_kwargs)
         add_op_log(adata, sc.pl.heatmap, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 
 @pl_mcp.tool()
@@ -190,11 +199,13 @@ async def dotplot(
         fig_path = set_fig_path("dotplot", **func_kwargs)
         add_op_log(adata, sc.pl.dotplot, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @pl_mcp.tool()
 async def matrixplot(
@@ -221,11 +232,13 @@ async def matrixplot(
         fig_path = set_fig_path("matrixplot", **func_kwargs)
         add_op_log(adata, sc.pl.matrixplot, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 
 @pl_mcp.tool()
@@ -252,11 +265,13 @@ async def tracksplot(
         fig_path = set_fig_path("tracksplot", **func_kwargs)
         add_op_log(adata, sc.pl.tracksplot, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @pl_mcp.tool()
 async def scatter(
@@ -282,11 +297,13 @@ async def scatter(
         fig_path = set_fig_path("scatter", **func_kwargs)
         add_op_log(adata, sc.pl.scatter, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @pl_mcp.tool()
 async def embedding(
@@ -317,11 +334,13 @@ async def embedding(
         fig_path = set_fig_path("embedding", **func_kwargs)
         add_op_log(adata, sc.pl.embedding, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 
 @pl_mcp.tool()
@@ -348,11 +367,13 @@ async def embedding_density(
         fig_path = set_fig_path("embedding_density", **func_kwargs)
         add_op_log(adata, sc.pl.embedding_density, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @pl_mcp.tool()
 async def rank_genes_groups(
@@ -378,11 +399,13 @@ async def rank_genes_groups(
         fig_path = set_fig_path("rank_genes_groups", **func_kwargs)
         add_op_log(adata, sc.pl.rank_genes_groups, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 
 @pl_mcp.tool()
@@ -409,11 +432,13 @@ async def rank_genes_groups_dotplot(
         fig_path = set_fig_path("rank_genes_groups_dotplot", **func_kwargs)
         add_op_log(adata, sc.pl.rank_genes_groups_dotplot, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 
 @pl_mcp.tool()
@@ -440,11 +465,13 @@ async def clustermap(
         fig_path = set_fig_path("clustermap", **func_kwargs)
         add_op_log(adata, sc.pl.clustermap, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @pl_mcp.tool()
 async def highly_variable_genes(
@@ -470,11 +497,13 @@ async def highly_variable_genes(
         fig_path = set_fig_path("highly_variable_genes", **func_kwargs)
         add_op_log(adata, sc.pl.highly_variable_genes, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 
 @pl_mcp.tool()
@@ -501,9 +530,10 @@ async def pca_variance_ratio(
         fig_path = set_fig_path("pca_variance_ratio", **func_kwargs)
         add_op_log(adata, sc.pl.pca_variance_ratio, func_kwargs)
         return {"figpath": fig_path}
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
-
+            raise e

@@ -4,8 +4,8 @@ import inspect
 import scanpy as sc
 from fastmcp import FastMCP , Context
 from ..schema.pp import *
-from ..util import filter_args, add_op_log, forward_request
-from ..logging_config import setup_logger
+from scmcp_shared.util import filter_args, add_op_log, forward_request
+from scmcp_shared.logging_config import setup_logger
 logger = setup_logger()
 
 
@@ -54,11 +54,13 @@ async def subset_cells(
         return [
             {"sampleid": sampleid or ads.active_id, "dtype": dtype, "adata": adata}
         ]
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 
 @pp_mcp.tool()
@@ -100,11 +102,13 @@ async def subset_genes(
         return [
             {"sampleid": sampleid or ads.active_id, "dtype": dtype, "adata": adata}
         ]
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @pp_mcp.tool()
 async def calculate_qc_metrics(
@@ -165,11 +169,13 @@ async def log1p(
         return [
                 {"sampleid": sampleid or ads.active_id, "dtype": dtype, "adata": adata}
             ]
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 
 @pp_mcp.tool()
@@ -194,11 +200,13 @@ async def normalize_total(
         return [
                 {"sampleid": sampleid or ads.active_id, "dtype": dtype, "adata": adata}
             ]
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 
 @pp_mcp.tool()
@@ -222,11 +230,13 @@ async def pca(
         return [
             {"sampleid": sampleid or ads.active_id, "dtype": dtype, "adata": adata}
         ]
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @pp_mcp.tool()
 async def highly_variable_genes(
@@ -253,12 +263,13 @@ async def highly_variable_genes(
         return [
             {"sampleid": sampleid or ads.active_id, "dtype": dtype, "adata": adata}
         ]
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
-
+            raise e
 @pp_mcp.tool()
 async def regress_out(
     ctx: Context,
@@ -284,11 +295,13 @@ async def regress_out(
         return [
             {"sampleid": sampleid or ads.active_id, "dtype": dtype, "adata": adata}
         ]
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @pp_mcp.tool()
 async def scale(
@@ -314,11 +327,13 @@ async def scale(
         return [
             {"sampleid": sampleid or ads.active_id, "dtype": dtype, "adata": adata}
         ]
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @pp_mcp.tool()
 async def combat(
@@ -344,11 +359,13 @@ async def combat(
         return [
             {"sampleid": sampleid or ads.active_id, "dtype": dtype, "adata": adata}
         ]
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @pp_mcp.tool()
 async def scrublet(
@@ -398,6 +415,8 @@ async def neighbors(
         return [
             {"sampleid": sampleid or ads.active_id, "dtype": dtype, "adata": adata}
         ]
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")

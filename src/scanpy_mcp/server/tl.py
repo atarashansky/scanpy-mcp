@@ -2,8 +2,8 @@ from fastmcp import FastMCP, Context
 import os
 import scanpy as sc
 from ..schema.tl import *
-from ..util import filter_args, add_op_log, forward_request
-from ..logging_config import setup_logger
+from scmcp_shared.util import filter_args, add_op_log, forward_request
+from scmcp_shared.logging_config import setup_logger
 logger = setup_logger()
 
 tl_mcp = FastMCP("ScanpyMCP-TL-Server")
@@ -30,11 +30,13 @@ async def tsne(
         return [
             {"sampleid": sampleid or ads.active_id, "dtype": dtype, "adata": adata},
         ]
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 
 @tl_mcp.tool()
@@ -58,12 +60,13 @@ async def umap(
         return [
             {"sampleid": sampleid or ads.active_id, "dtype": dtype, "adata": adata},
         ]
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
-
+            raise e
 
 @tl_mcp.tool()
 async def draw_graph(
@@ -86,11 +89,13 @@ async def draw_graph(
         return [
             {"sampleid": sampleid or ads.active_id, "dtype": dtype, "adata": adata},
         ]
+    except KeyError as e:
+        raise e
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
             raise Exception(f"{str(e.__context__)}")
         else:
-            raise e 
+            raise e
 
 @tl_mcp.tool()
 async def diffmap(
