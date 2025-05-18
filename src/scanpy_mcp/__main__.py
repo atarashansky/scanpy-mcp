@@ -2,7 +2,7 @@
 import asyncio
 from fastmcp import FastMCP
 from .server import io_mcp, pp_mcp, tl_mcp, pl_mcp, ul_mcp
-import liana_mcp.server as limcp
+
 
 sc_mcp = FastMCP("Scanpy-MCP-Server")
 
