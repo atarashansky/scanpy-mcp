@@ -29,7 +29,7 @@ async def test_subset_cells(mcp_config):
         result = await client.call_tool("pp_highly_variable_genes", {"request":{}})
         assert "highly_variable" in result[0].text
 
-        result = await client.call_tool("pp_pca", {"request":{"n_comps": 50}})
+        result = await client.call_tool("tl_pca", {"request":{"n_comps": 50}})
         assert "X_pca" in result[0].text
 
         result = await client.call_tool("pp_neighbors", {"request":{}})
