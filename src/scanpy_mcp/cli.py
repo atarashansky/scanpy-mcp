@@ -10,7 +10,7 @@ import sys
 import typer
 from enum import Enum
 from typing import Optional
-
+from scmcp_shared.util import add_figure_route
 
 app = typer.Typer(
     name="scanpymcp",
@@ -60,22 +60,15 @@ def run(
     if transport == Transport.STDIO:
         scanpy_mcp.run()
     elif transport == Transport.SSE:
-        from .util import get_figure
-        from starlette.routing import Route
-
-        scanpy_mcp._additional_http_routes = [Route("/figures/{figure_name}", endpoint=get_figure)]        
+        add_figure_route(scanpy_mcp)     
         scanpy_mcp.run(
                 transport="sse",
                 host=host, 
                 port=port, 
                 log_level="info"
             )
-
     elif transport == Transport.SHTTP:
-        from .util import get_figure
-        from starlette.routing import Route
-
-        scanpy_mcp._additional_http_routes = [Route("/figures/{figure_name}", endpoint=get_figure)]
+        add_figure_route(scanpy_mcp)
         scanpy_mcp.run(
                 transport="streamable-http",
                 host=host, 
