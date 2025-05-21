@@ -1,5 +1,6 @@
 import inspect
 from fastmcp import FastMCP, Context
+from fastmcp.exceptions import ToolError
 import os
 import anndata as ad
 from ..schema.util import *
@@ -40,10 +41,10 @@ async def map_cell_type(
             "message": f"Successfully mapped values from '{cluster_key}' to '{added_key}'",
             "adata": adata
         }
-    except KeyError as e:
-        raise e
+    except ToolError as e:
+        raise ToolError(e)
     except Exception as e:
         if hasattr(e, '__context__') and e.__context__:
-            raise Exception(f"{str(e.__context__)}")
+            raise ToolError(e.__context__)
         else:
-            raise e
+            raise ToolError(e)
