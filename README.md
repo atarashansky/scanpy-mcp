@@ -71,3 +71,8 @@ http://localhost:8000/mcp
 ## 🤝 Contributing
 
 If you have any questions, welcome to submit an issue, or contact me(hsh-me@outlook.com). Contributions to the code are also welcome!
+
+## Citing
+If you use scanpy-mcp in for your research, please consider citing  following work: 
+> Wolf, F., Angerer, P. & Theis, F. SCANPY: large-scale single-cell gene expression data analysis. Genome Biol 19, 15 (2018). https://doi.org/10.1186/s13059-017-1382-0
+
