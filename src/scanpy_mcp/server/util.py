@@ -2,7 +2,7 @@ import inspect
 from fastmcp import FastMCP, Context
 from fastmcp.exceptions import ToolError
 import os
-import anndata as ad
+
 from ..schema.util import *
 from scmcp_shared.schema import AdataModel
 from scmcp_shared.logging_config import setup_logger
