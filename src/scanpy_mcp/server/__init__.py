@@ -29,7 +29,8 @@ async def setup(modules=None):
         "ul": shs.ul_mcp
         }
     if modules is None or modules == "all":
-        modules = ["io", "pp", "tl", "pl", "ul"]
+        modules = mcp_dic.keys()
     for module in modules:
         await scanpy_mcp.import_server(module, mcp_dic[module])
     await scanpy_mcp.import_server("ul2", ul_mcp)
+ 
