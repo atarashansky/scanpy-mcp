@@ -41,13 +41,20 @@ you can test it by running
 scanpy-mcp run
 ```
 
-#### run scnapy-server locally
+
+#### run scnapy-mcp locally
 Refer to the following configuration in your MCP client:
+
+check path
+```
+$ which scanpy 
+/home/test/bin/scanpy-mcp
+```
 
 ```
 "mcpServers": {
   "scanpy-mcp": {
-    "command": "scanpy-mcp",
+    "command": "//home/test/bin/scanpy-mcp",
     "args": [
       "run"
     ]
@@ -55,7 +62,7 @@ Refer to the following configuration in your MCP client:
 }
 ```
 
-#### run scnapy-server remotely
+#### run scnapy-mcp remotely
 Refer to the following configuration in your MCP client:
 
 run it in your server
@@ -63,9 +70,14 @@ run it in your server
 scanpy-mcp run --transport shttp --port 8000
 ```
 
-Then configure your MCP client, like this:
+Then configure your MCP client in local AI client, like this:
 ```
-http://localhost:8000/mcp
+
+"mcpServers": {
+  "scanpy-mcp": {
+    "url": "http://localhost:8000/mcp"
+  }
+}
 ```
 
 ## 🤝 Contributing
