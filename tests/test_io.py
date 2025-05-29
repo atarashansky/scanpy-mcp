@@ -2,7 +2,10 @@ import pytest
 from fastmcp import Client
 import anndata
 from pathlib import Path
+import nest_asyncio
 
+# Apply nest_asyncio at module level
+nest_asyncio.apply()
 
 @pytest.mark.asyncio 
 async def test_read_and_write(mcp):
