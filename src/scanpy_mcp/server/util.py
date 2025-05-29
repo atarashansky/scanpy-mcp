@@ -4,23 +4,24 @@ from fastmcp.exceptions import ToolError
 import os
 
 from ..schema.util import *
-from scmcp_shared.schema import AdataModel
+from scmcp_shared.schema import AdataInfo
 from scmcp_shared.logging_config import setup_logger
 from scmcp_shared.util import add_op_log,forward_request, get_ads
+from scmcp_shared.server.util import ScanpyUtilMCP
 logger = setup_logger()
 
 
-ul_mcp = FastMCP("ScanpyMCP-Util-Server")
+ul_mcp = ScanpyUtilMCP().mcp
 
 
 @ul_mcp.tool()
-async def map_cell_type(
+def map_cell_type(
     request: CelltypeMapCellTypeModel,
-    adinfo: AdataModel = AdataModel()
+    adinfo: AdataInfo = AdataInfo()
 ):
     """Map cluster id to cell type names"""
     try:
-        result = await forward_request("ul_map_cell_type", request, adinfo)
+        result = forward_request("ul_map_cell_type", request, adinfo)
         if result is not None:
             return result
         adata = get_ads().get_adata(adinfo=adinfo)
