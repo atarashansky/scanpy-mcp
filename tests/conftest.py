@@ -1,13 +1,7 @@
-
 import pytest
 
 @pytest.fixture
-def mcp_config():
-    return {
-        "mcpServers": {
-            "scanpy-mcp": {
-                "command": "scanpy-mcp",
-                "args": ["run"]
-            }
-        }
-    }
+def mcp():
+    from scanpy_mcp.server import ScanpyMCPManager
+    mcp = ScanpyMCPManager("scanpy-mcp").mcp
+    return mcp

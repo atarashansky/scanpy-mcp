@@ -5,11 +5,12 @@ from pathlib import Path
 
 
 @pytest.mark.asyncio 
-async def test_read_and_write(mcp_config):
+async def test_read_and_write(mcp):
     # Pass the server directly to the Client constructor
     test_dir = Path(__file__).parent / "data/hg19"
     outfile = Path(__file__).parent / "data/test.h5ad"
-    async with Client(mcp_config) as client:
+    async with Client(mcp) as client:
+        tools = await client.list_tools()
         result = await client.call_tool("io_read", {"request":{"filename": test_dir}})
         assert "AnnData" in result[0].text
 
