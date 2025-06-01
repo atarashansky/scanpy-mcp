@@ -11,7 +11,7 @@ dependencies = [
     "fastmcp>=2.3.5",
     "scanpy>=1.10.0",
     "nest_asyncio",
-    "scmcp-shared>=0.3.0",
+    "scmcp-shared>=0.3.5",
     "leidenalg",
     "igraph"
 ]
