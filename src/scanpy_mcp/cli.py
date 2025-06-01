@@ -12,6 +12,3 @@ cli = MCPCLI(
     help_text="Scanpy MCP Server CLI",
     manager=ScanpyMCPManager
 )
-
-def run_cli():
-    cli.app()

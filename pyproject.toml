@@ -24,7 +24,7 @@ dev = [
 
 
 [project.scripts]
-scanpy-mcp = "scanpy_mcp.cli:run_cli"
+scanpy-mcp = "scanpy_mcp.cli:cli.run"
 
 [build-system]
 requires = ["hatchling"]
