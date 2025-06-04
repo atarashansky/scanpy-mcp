@@ -23,6 +23,12 @@ dev = [
 ]
 
 
+[project.urls]
+Homepage = "http://scmcphub.org/"
+Repository = "https://github.com/scmcphub/scanpy-mcp"
+Documentation = "https://docs.scmcphub.org/"
+
+
 [project.scripts]
 scanpy-mcp = "scanpy_mcp.cli:cli.run"
 
