@@ -6,6 +6,18 @@ readme = "README.md"
 authors = [
     { name = "shuang", email = "hsh-me@outlook.com" }
 ]
+
+keywords = [
+    "mcp",
+    "model context protocol",
+    "llm",
+    "agent",
+    "scRNA-seq",
+    "single cell",
+    "bioinformatics",
+    "AI"
+]
+
 requires-python = ">=3.10"
 dependencies = [
     "fastmcp>=2.3.5",
@@ -13,7 +25,9 @@ dependencies = [
     "nest_asyncio",
     "scmcp-shared>=0.3.5",
     "leidenalg",
-    "igraph"
+    "igraph",
+    "agno",
+    "lancedb"
 ]
 
 [dependency-groups]
@@ -42,3 +56,6 @@ path = "src/scanpy_mcp/__init__.py"
 [tool.pytest.ini_options]
 asyncio_mode = "strict"
 asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+lint.ignore = ["F403", "F405"]

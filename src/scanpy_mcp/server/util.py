@@ -7,7 +7,7 @@ from ..schema.util import *
 from scmcp_shared.schema import AdataInfo
 from scmcp_shared.logging_config import setup_logger
 from scmcp_shared.util import add_op_log,forward_request, get_ads
-from scmcp_shared.server.util import ScanpyUtilMCP
+from scmcp_shared.server.preset.util import ScanpyUtilMCP
 logger = setup_logger()
 
 
