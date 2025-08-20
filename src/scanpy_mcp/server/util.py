@@ -6,8 +6,14 @@ import os
 from ..schema.util import *
 from scmcp_shared.schema import AdataInfo
 from scmcp_shared.logging_config import setup_logger
-from scmcp_shared.util import add_op_log,forward_request, get_ads
+from scmcp_shared.util import (
+    forward_request,
+    get_ads,
+    add_op_log,
+    deserialize_mcp_param,
+)
 from scmcp_shared.server.preset.util import ScanpyUtilMCP
+
 logger = setup_logger()
 
 
@@ -15,12 +21,12 @@ ul_mcp = ScanpyUtilMCP().mcp
 
 
 @ul_mcp.tool()
-def map_cell_type(
-    request: CelltypeMapCellTypeModel,
-    adinfo: AdataInfo = AdataInfo()
-):
+def map_cell_type(request: CelltypeMapCellTypeModel, adinfo: AdataInfo = AdataInfo()):
     """Map cluster id to cell type names"""
     try:
+        request = deserialize_mcp_param(request, CelltypeMapCellTypeModel)
+        adinfo = deserialize_mcp_param(adinfo, AdataInfo, AdataInfo())
+
         result = forward_request("ul_map_cell_type", request, adinfo)
         if result is not None:
             return result
@@ -34,20 +40,24 @@ def map_cell_type(
             adata.obs[added_key] = adata.obs[cluster_key].map(request.mapping)
         elif request.new_names is not None:
             adata.rename_categories(cluster_key, request.new_names)
-        
-        func_kwargs = {"cluster_key": cluster_key, "added_key": added_key, 
-                    "mapping": request.mapping, "new_names": request.new_names}
+
+        func_kwargs = {
+            "cluster_key": cluster_key,
+            "added_key": added_key,
+            "mapping": request.mapping,
+            "new_names": request.new_names,
+        }
         add_op_log(adata, "map_cell_type", func_kwargs)
-        
+
         return {
-            "status": "success", 
+            "status": "success",
             "message": f"Successfully mapped values from '{cluster_key}' to '{added_key}'",
-            "adata": adata
+            "adata": adata,
         }
     except ToolError as e:
         raise ToolError(e)
     except Exception as e:
-        if hasattr(e, '__context__') and e.__context__:
+        if hasattr(e, "__context__") and e.__context__:
             raise ToolError(e.__context__)
         else:
             raise ToolError(e)
